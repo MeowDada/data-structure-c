@@ -40,5 +40,13 @@ int main(int argc, char **argv)
     vector_info(vector);
     printf("pop item = %d\n", *(int *)elem);
 
+    elem = vector_pop_front(vector);
+    vector_dump(vector, vector_print_int);
+    vector_info(vector);
+    if (elem)
+        printf("pop item = %d\n", *(int *)elem);
+    else
+        printf("pop item = (nil)\n");
+
     return 0;
 }

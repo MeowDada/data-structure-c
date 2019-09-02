@@ -16,6 +16,7 @@ extern any_t      vector_at(vector_t, int);
 extern void       vector_clear(vector_t);
 extern void       vector_iterate(vector_t, PFany, any_t);
 extern void       vector_dump(vector_t, PrintFunc);
+extern void       vector_info(vector_t);
 extern int        vector_size(vector_t);
 extern int        vector_capacity(vector_t);
 

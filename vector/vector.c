@@ -171,6 +171,24 @@ void vector_dump(vector_t v, PrintFunc fptr)
     printf("\n");
 }
 
+void vector_info(vector_t v)
+{
+    VECTOR_GET_INSTANCE
+
+    if (!v) {
+        printf("vector is (nil)\n");
+        return;
+    }
+
+    printf("%-12s = %p\n", "vector pos", vec);
+    if (vec->data)
+        printf("%-12s = %p\n", "vector data", vec->data);
+    else
+        printf("%-12s = (nil)\n", "vector data");
+    printf("%-12s = %d\n", "vector size", vec->size);
+    printf("%-12s = %d\n", "vector capacity", vec->capacity);
+}
+
 int vector_size(vector_t v)
 {
     VECTOR_GET_INSTANCE

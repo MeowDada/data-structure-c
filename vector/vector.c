@@ -109,10 +109,12 @@ any_t vector_pop_back(vector_t v)
 {
     VECTOR_GET_INSTANCE
     if (vec->size <= 0)
-        return;
+        return NULL;
     
+    any_t elem = vec->data[vec->size-1];
     vector_remove_element(vec, vec->size-1);
     vector_resize_check(vec);
+    return elem;
 }
 
 any_t vector_pop_front(vector_t v)
@@ -121,8 +123,10 @@ any_t vector_pop_front(vector_t v)
     if (vec->size <= 0)
         return;
     
+    any_t elem = vec->data[0];
     vector_remove_element(vec, 0);
     vector_resize_check(vec);
+    return elem;
 }
 
 any_t vector_at(vector_t v, int idx)

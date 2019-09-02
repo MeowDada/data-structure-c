@@ -1,4 +1,5 @@
 #include <unistd.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include "vector.h"
 
@@ -121,7 +122,7 @@ any_t vector_pop_front(vector_t v)
 {
     VECTOR_GET_INSTANCE
     if (vec->size <= 0)
-        return;
+        return NULL;
     
     any_t elem = vec->data[0];
     vector_remove_element(vec, 0);

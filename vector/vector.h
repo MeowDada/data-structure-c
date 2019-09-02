@@ -1,10 +1,13 @@
 #ifndef VECTOR_H
 #define VECTOR_H
+#include <unistd.h>
 
 typedef void  *any_t;
 typedef void  *vector_t;
 typedef void (*PFany)(any_t, any_t);
 typedef void (*PrintFunc)(any_t);
+typedef int  (*cmpFunc)(const void *, const void *);
+typedef void (*PsortFunc)(any_t, size_t, size_t, cmpFunc);
 
 extern vector_t   vector_create(void);
 extern void       vector_destroy(vector_t *);
@@ -15,6 +18,7 @@ extern any_t      vector_pop_front(vector_t);
 extern any_t      vector_at(vector_t, int);
 extern void       vector_clear(vector_t);
 extern void       vector_iterate(vector_t, PFany, any_t);
+extern void       vector_sort(vector_t, PsortFunc, size_t, size_t, cmpFunc);
 extern void       vector_dump(vector_t, PrintFunc);
 extern void       vector_info(vector_t);
 extern int        vector_size(vector_t);

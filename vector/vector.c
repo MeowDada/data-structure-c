@@ -157,6 +157,15 @@ void vector_iterate(vector_t v, PFany fptr, any_t args)
     }
 }
 
+void vector_sort(vector_t v, PsortFunc sort_func, size_t num, size_t size, cmpFunc cmp)
+{
+    if (!v || !sort_func)
+        return;
+    
+    VECTOR_GET_INSTANCE
+    (*sort_func)(vec->data, num, size, cmp);
+}
+
 void vector_dump(vector_t v, PrintFunc fptr)
 {
     if (!v || !fptr)

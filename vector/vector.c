@@ -45,7 +45,10 @@ static void vector_shift_element(vector *vec, int pos, int offset)
         return;
     
     int member_to_shift = vec->size - pos;
-    memmove(VEC(pos+offset), VEC(pos), member_to_shift*vec->sizeof_elem);
+    void *dest = VEC(pos+offset);
+    void *src  = VEC(pos);
+    size_t bytes_to_shift = vec->sizeof_elem*member_to_shift;
+    memmove(dest, src, bytes_to_shift);
 }
 
 static void vector_clear_element(vector *vec, int idx)

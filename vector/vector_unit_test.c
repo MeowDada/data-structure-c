@@ -5,7 +5,7 @@ static void basic_test_case(void *vector)
 {
     int arr1[] = {6,7,8,9,10};
     int arr2[] = {5,4,3,2,1};
-    
+
     for (int i = 0; i < 5; i++)
         vector_push_back(vector, &arr1[i]);
     for (int i = 0; i < 5; i++)
@@ -34,6 +34,27 @@ static void basic_test_case(void *vector)
     printf("pop item = %d\n", *(int *)elem);
 
     elem = vector_pop_front(vector);
+    vector_dump(vector, vector_print_int);
+    if (elem)
+        printf("pop item = %d\n", *(int *)elem);
+    else
+        printf("pop item = (nil)\n");
+
+    elem = vector_pop_back(vector);
+    vector_dump(vector, vector_print_int);
+    if (elem)
+        printf("pop item = %d\n", *(int *)elem);
+    else
+        printf("pop item = (nil)\n");
+
+    elem = vector_pop_back(vector);
+    vector_dump(vector, vector_print_int);
+    if (elem)
+        printf("pop item = %d\n", *(int *)elem);
+    else
+        printf("pop item = (nil)\n");
+
+    elem = vector_pop_back(vector);
     vector_dump(vector, vector_print_int);
     if (elem)
         printf("pop item = %d\n", *(int *)elem);

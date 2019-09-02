@@ -41,7 +41,7 @@ static void vector_assign_element(vector *vec, int idx, any_t data)
 
 static void vector_shift_element(vector *vec, int pos, int offset)
 {
-    if (vector_validate_index(vec, pos))
+    if (vector_validate_index(vec, pos) || offset == 0)
         return;
     
     int member_to_shift = vec->size - pos;
@@ -61,7 +61,7 @@ static void vector_resize_bigger(vector *vec)
     vec->capacity = vec->capacity * VECTOR_RESIZE_FACTOR;
     any_t temp = realloc(vec->data, vec->capacity * vec->sizeof_elem);
     if (temp)
-        vec->data = (any_t *)temp;
+        vec->data = temp;
 }
 
 static void vector_resize_smaller(vector *vec)
@@ -69,7 +69,7 @@ static void vector_resize_smaller(vector *vec)
     vec->capacity = vec->capacity / VECTOR_RESIZE_FACTOR;
     any_t temp = realloc(vec->data, vec->capacity * vec->sizeof_elem);
     if (temp)
-        vec->data = (any_t *)temp;
+        vec->data = temp;
 }
 
 static void vector_resize_check(vector *vec)
@@ -87,7 +87,6 @@ static void vector_remove_element(vector *vec, int idx)
         return;
     
     int tail = vec->size-1;
-    int diff = tail-idx;
 
     if (idx == tail) {
         vector_clear_element(vec, tail);

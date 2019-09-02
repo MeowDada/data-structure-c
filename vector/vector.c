@@ -92,7 +92,7 @@ static void vector_remove_element(vector *vec, int idx)
     if (diff > 0)
         memmove(VEC(idx), VEC(idx+1), diff*vec->sizeof_elem);
     else if(diff == 0)
-        vector_clear_element(vec, 0);
+        vector_clear_element(vec, idx);
     vec->size--;
 }
 

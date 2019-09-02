@@ -37,7 +37,7 @@ static void vector_resize_smaller(vector *v)
 
 static void vector_resize_check(vector *vec)
 {
-    if (vec->capacity <= VECTOR_INIT_CAPACITY)
+    if (vec->capacity <= vec->size)
         return;
 
     if (vec->capacity == vec->size)

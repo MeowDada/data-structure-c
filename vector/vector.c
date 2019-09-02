@@ -39,13 +39,6 @@ static void vector_assign_element(vector *vec, int idx, any_t data)
     memcpy(VEC(idx), data, vec->sizeof_elem);
 }
 
-static void vector_assign_value(vector *vec, int from, int to)
-{
-    any_t elem_from = VEC(from);
-    any_t elem_to   = VEC(to);
-    memcpy(elem_to, elem_from, vec->sizeof_elem);
-}
-
 static void vector_shift_element(vector *vec, int pos, int offset)
 {
     if (pos+offset < 0 || pos < 0 || pos >= vec->capacity || pos+offset >= vec->capacity)
@@ -146,8 +139,6 @@ void vector_push_front(vector_t v, any_t element)
     vector_resize_check(v);
 
     VECTOR_GET_INSTANCE
-    int size = vec->size;
-    
     vector_shift_element(vec, 0, 1);
     vector_assign_element(vec, 0, element);
     vec->size++;

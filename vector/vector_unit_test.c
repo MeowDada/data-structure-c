@@ -3,7 +3,7 @@
 
 int main(int argc, char **argv)
 {
-    vector_t vector = vector_create();
+    vector_t vector = vector_create(sizeof(int));
     if (!vector) {
         fprintf(stderr, "could not allocate memory for vector\n");
         return -1;

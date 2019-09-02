@@ -8,7 +8,7 @@
 #define VECTOR_RESIZE_FACTOR (2)
 #define VECTOR_RESIZE_RATIO  ((VECTOR_RESIZE_FACTOR)*(VECTOR_RESIZE_FACTOR))
 #define VECTOR_GET_INSTANCE vector *vec = (vector *)v;
-#define VEC(i) (void *)((char *)vec->data + vec->sizeof_elem*i)
+#define VEC(i) (void *)((char *)vec->data + vec->sizeof_elem*(i))
 
 typedef struct vector {
     any_t  *data;

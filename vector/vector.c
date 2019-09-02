@@ -41,11 +41,11 @@ static void vector_assign_element(vector *vec, int idx, any_t data)
 
 static void vector_shift_element(vector *vec, int pos, int offset)
 {
-    if (pos+offset < 0 || pos < 0 || pos >= vec->capacity || pos+offset >= vec->capacity || offset <= 0)
+    if (vector_validate_index(vec, pos))
         return;
     
-    size_t bytes_to_shift = offset > 0 ? offset*vec->sizeof_elem : -offset*vec->sizeof_elem;
-    memmove(VEC(pos+offset), VEC(pos), bytes_to_shift);
+    int member_to_shift = vec->size - pos;
+    memmove(VEC(pos+offset), VEC(pos), member_to_shift*vec->sizeof_elem);
 }
 
 static void vector_clear_element(vector *vec, int idx)

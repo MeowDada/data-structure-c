@@ -3,9 +3,13 @@
 
 static void basic_test_case(void *vector)
 {
-    int arr[] = {1,2,3,4,5};
+    int arr1[] = {6,7,8,9,10};
+    int arr2[] = {5,4,3,2,1};
+    
     for (int i = 0; i < 5; i++)
-    vector_push_back(vector, &arr[i]);
+        vector_push_back(vector, &arr1[i]);
+    for (int i = 0; i < 5; i++)
+        vector_push_front(vector, &arr2[i]);
     vector_info(vector);
     vector_dump(vector, vector_print_int);
 

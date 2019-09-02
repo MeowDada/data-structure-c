@@ -5,7 +5,7 @@ int main(int argc, char **argv)
 {
     vector_t vector = vector_create();
     if (!vector) {
-        printf(stderr, "could not allocate memory for vector\n");
+        fprintf(stderr, "could not allocate memory for vector\n");
         return -1;
     }
 

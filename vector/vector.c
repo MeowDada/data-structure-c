@@ -9,24 +9,13 @@
 
 typedef struct vector {
     any_t  *data;
-    size_t  size;
-    size_t  capacity;
+    int     size;
+    int     capacity;
 } vector;
 
 static inline any_t vector_last_index(vector *v)
 {
     return v->data[v->size-1];
-}
-
-static void vector_resize_check(vector *vec)
-{
-    if (vec->capacity <= VECTOR_INIT_CAPACITY)
-        return;
-
-    if (vec->capacity == vec->size)
-        vector_resize_bigger(vec);
-    else if(vec->size == vec->capacity / VECTOR_RESIZE_RATIO)
-        vector_resize_smaller(vec);
 }
 
 static void vector_resize_bigger(vector *v)
@@ -45,13 +34,24 @@ static void vector_resize_smaller(vector *v)
         v->data = (any_t *)temp;
 }
 
+static void vector_resize_check(vector *vec)
+{
+    if (vec->capacity <= VECTOR_INIT_CAPACITY)
+        return;
+
+    if (vec->capacity == vec->size)
+        vector_resize_bigger(vec);
+    else if(vec->size == vec->capacity / VECTOR_RESIZE_RATIO)
+        vector_resize_smaller(vec);
+}
+
 static void vector_remove_element(vector *v, int idx)
 {
     if (idx >= v->size || idx < 0)
         return;
     
-    size_t size = v->size;
-    for (size_t i = idx; i < size-1; i++)
+    int size = v->size;
+    for (int i = idx; i < size-1; i++)
         v->data[i] = v->data[i+1];
     v->data[size-1] = NULL;
     v->size--;
@@ -98,7 +98,7 @@ void vector_push_front(vector_t v, any_t element)
     vector_resize_check(v);
 
     VECTOR_GET_INSTANCE
-    size_t size = vec->size;
+    int size = vec->size;
     for (int i = 0 ; i < size; i++)
         vec->data[size-i] = vec->data[size-i];
     vec->data[0] = element;
@@ -137,7 +137,7 @@ any_t vector_at(vector_t v, int idx)
 void vector_clear(vector_t v)
 {
     VECTOR_GET_INSTANCE
-    for (size_t i = 0; i < vec->size; i++)
+    for (int i = 0; i < vec->size; i++)
         vec->data[i] = NULL;
     vec->size = 0;
 }
@@ -148,8 +148,8 @@ void vector_iterate(vector_t v, PFany fptr, any_t args)
     if (!vec || !fptr)
         return;
     
-    size_t size = vec->size;
-    for (size_t i = 0; i < size; i++) {
+    int size = vec->size;
+    for (int i = 0; i < size; i++) {
         (*fptr)(v, args);
     }
 }
@@ -160,19 +160,19 @@ void vector_dump(vector_t v, PrintFunc fptr)
         return;
     
     VECTOR_GET_INSTANCE
-    size_t size = vec->size;
-    for (size_t i = 0; i < size; i++)
+    int size = vec->size;
+    for (int i = 0; i < size; i++)
         (*fptr)(vec->data[i]);
     printf("\n");
 }
 
-inline int vector_size(vector_t v)
+int vector_size(vector_t v)
 {
     VECTOR_GET_INSTANCE
     return (int)vec->size;
 }
 
-inline int vector_capacity(vector_t v)
+int vector_capacity(vector_t v)
 {
     VECTOR_GET_INSTANCE
     return (int)vec->capacity;

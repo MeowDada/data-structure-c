@@ -181,6 +181,12 @@ any_t vector_at(vector_t v, int idx)
     return VEC(idx);
 }
 
+void vector_remove_elem(vector_t v, int idx)
+{
+    VECTOR_GET_INSTANCE
+    vector_remove_element(vec, idx);
+}
+
 void vector_clear(vector_t v)
 {
     VECTOR_GET_INSTANCE
@@ -198,6 +204,21 @@ void vector_iterate(vector_t v, PFany fptr, any_t args)
     for (int i = 0; i < size; i++) {
         (*fptr)(VEC(i), args);
     }
+}
+
+int vector_find(vector_t v, any_t target, cmpFunc cmp)
+{
+    if (!target || !cmp || !v)
+        return;
+
+    VECTOR_GET_INSTANCE
+    int size = vec->size;
+    for (int i = 0; i < size; i++) {
+        if ((*cmp)(VEC(i), target)) {
+            return i;
+        }
+    }
+    return -1;
 }
 
 void vector_sort(vector_t v, PsortFunc sort_func, size_t num, size_t size, cmpFunc cmp)

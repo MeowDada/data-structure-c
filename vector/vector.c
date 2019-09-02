@@ -37,9 +37,6 @@ static void vector_resize_smaller(vector *v)
 
 static void vector_resize_check(vector *vec)
 {
-    if (vec->capacity <= vec->size)
-        return;
-
     if (vec->capacity == vec->size)
         vector_resize_bigger(vec);
     else if(vec->size == vec->capacity / VECTOR_RESIZE_RATIO)

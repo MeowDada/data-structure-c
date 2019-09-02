@@ -17,11 +17,11 @@ int main(int argc, char **argv)
 
     void *elem = vector_pop_back(vector);
     vector_dump(vector, vector_print_int);
-    printf("poped elem = %d\n", *(int *)elem);
+    printf("pop item = %d\n", *(int *)elem);
 
     elem = vector_pop_front(vector);
     vector_dump(vector, vector_print_int);
-    printf("poped elem = %d\n", *(int *)elem);
+    printf("pop item = %d\n", *(int *)elem);
 
     return 0;
 }

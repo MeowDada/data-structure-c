@@ -41,7 +41,7 @@ static void vector_assign_element(vector *vec, int idx, any_t data)
 
 static void vector_shift_element(vector *vec, int pos, int offset)
 {
-    if (pos+offset < 0 || pos < 0 || pos >= vec->capacity || pos+offset >= vec->capacity)
+    if (pos+offset < 0 || pos < 0 || pos >= vec->capacity || pos+offset >= vec->capacity || offset <= 0)
         return;
     
     size_t bytes_to_shift = offset > 0 ? offset*vec->sizeof_elem : -offset*vec->sizeof_elem;
@@ -89,10 +89,12 @@ static void vector_remove_element(vector *vec, int idx)
     int tail = vec->size-1;
     int diff = tail-idx;
 
-    if (diff > 0)
-        memmove(VEC(idx), VEC(idx+1), diff*vec->sizeof_elem);
-    else if(diff == 0)
-        vector_clear_element(vec, idx);
+    if (idx == tail) {
+        vector_clear_element(vec, tail);
+        vec->size--;
+        return;
+    }
+    vector_shift_element(vec, idx+1, -1);
     vec->size--;
 }
 

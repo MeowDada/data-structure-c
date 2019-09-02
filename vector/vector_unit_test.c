@@ -19,5 +19,9 @@ int main(int argc, char **argv)
     vector_dump(vector, vector_print_int);
     printf("poped elem = %d\n", *(int *)elem);
 
+    elem = vector_pop_front(vector);
+    vector_dump(vector, vector_print_int);
+    printf("poped elem = %d\n", *(int *)elem);
+
     return 0;
 }

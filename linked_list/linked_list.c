@@ -108,6 +108,30 @@ void linked_list_dump(linked_list_t _node, void (*printFunc)(any_t))
 }
 
 /* Operation for list */
+linked_list_t linked_list_get_head_node(linked_list_t _node)
+{
+    if (!_node)
+        return NULL;
+
+    list_t *node = (list_t *)_node;
+    while(node->prev)
+        node = node->prev;
+
+    return node;
+}
+
+linked_list_t linked_list_get_tail_node(linked_list_t _node)
+{
+    if (!_node)
+        return NULL;
+
+    list_t *node = (list_t *)_node;
+    while(node->next)
+        node = node->next;
+    
+    return node;
+}
+
 int linked_list_get_total_length(linked_list_t _node)
 {
     list_t *node = (list_t *)_node;
@@ -199,7 +223,7 @@ linked_list_t linked_list_insert_tail(linked_list_t _list, linked_list_t _node)
     return list_head;
 }
 
-linked_list_t linked_list_insert_front(linked_list_t _list, linked_list_t _node)
+linked_list_t linked_list_insert_head(linked_list_t _list, linked_list_t _node)
 {
     if (!_list || !_node)
         return;
@@ -222,4 +246,15 @@ linked_list_t linked_list_insert_front(linked_list_t _list, linked_list_t _node)
     node_tail->next = list;
 
     return node_head;
+}
+
+linked_list_t linked_list_delete_head(linked_list_t _list)
+{
+    if (!_list)
+        return NULL;
+    
+    list_t *head = linked_list_get_head_node(_list);
+    list_t *new_head = head->next;
+    linked_list_delete(head);
+    return new_head;
 }

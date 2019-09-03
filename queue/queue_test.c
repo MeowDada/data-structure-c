@@ -22,5 +22,7 @@ int main(int argc, char **argv)
     }
     printf("\n");
 
+    queue_destroy(q);
+
     return 0;
 }

@@ -21,6 +21,9 @@ build_vector_unit_test:
 
 build_vector_lib:
 	$(CC) -shared -o $(LIBRARY_PATH)/$(VECTOR_LIB_TARGET) -I $(INCLUDE_PATH) -fPIC $(VECTOR_LIB_SRCS)
+	sudo cp $(LIBRARY_PATH)/$(VECTOR_LIB_TARGET) /usr/local/lib
+	sudo ldconfig
+	sudo ln -s /usr/local/bin/$(VECTOR_LIB_TARGET) /usr/local/bin/libvector.so
 
 clean:
 	rm -rf *.o

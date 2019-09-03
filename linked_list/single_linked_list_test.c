@@ -18,11 +18,11 @@ int main(int argc, char **argv)
     for (int i = 0; i < 5; i++)
         node[i] = single_linked_list_create(&arr[i]);
 
-    single_linked_list_append(&node[0], &node[1]);
-    single_linked_list_append(&node[0], &node[2]);
-    single_linked_list_append(&node[0], &node[3]);
-    single_linked_list_append(&node[0], &node[4]);
-    single_linked_list_iterate(&node[0], print_int, NULL);
+    single_linked_list_append(node[0], node[1]);
+    single_linked_list_append(node[0], node[2]);
+    single_linked_list_append(node[0], node[3]);
+    single_linked_list_append(node[0], node[4]);
+    single_linked_list_iterate(node[0], print_int, NULL);
 
     return 0;
 }

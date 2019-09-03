@@ -10,7 +10,7 @@ VECTOR_UNIT_TEST_PROG := vector_unit_test
 VECTOR_UNIT_TEST_SRCS := vector_unit_test.c vector.c vector_print.c
 VECTOR_UNIT_TEST_OBJS := $(patsubst %.c,%.o,$(VECTOR_UNIT_TEST_SRCS))
 
-VECTOR_LIB_TARGET     := libvector.so.$(LIBRARY_VERSION)
+VECTOR_LIB_TARGET     := libvector.so
 VECTOR_LIB_SRCS       := vector.c vector_print.c
 
 all: build_vector_unit_test build_vector_lib
@@ -21,9 +21,6 @@ build_vector_unit_test:
 
 build_vector_lib:
 	$(CC) -shared -o $(LIBRARY_PATH)/$(VECTOR_LIB_TARGET) -I $(INCLUDE_PATH) -fPIC $(VECTOR_LIB_SRCS)
-	sudo cp $(LIBRARY_PATH)/$(VECTOR_LIB_TARGET) /usr/local/lib
-	sudo ldconfig
-	sudo ln -s /usr/local/bin/$(VECTOR_LIB_TARGET) /usr/local/bin/libvector.so
 
 clean:
 	rm -rf *.o

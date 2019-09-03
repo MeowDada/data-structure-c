@@ -14,8 +14,22 @@ queue_t queue_create(int impl, any_t arg1, any_t arg2)
     queue *q    = calloc(1, sizeof(queue));
     if (!q)
         return NULL;
-    
-    q->impl     = queue_impl_table[impl];
+
+    switch (impl)
+    {
+        case QUEUE_IMPL_BY_ARRAY:
+            q->impl = &queue_impl_by_array;
+            break;
+        case QUEUE_IMPL_BY_VECTOR:
+            q->impl = &queue_impl_by_vector;
+            break;
+        case QUEUE_IMPL_BY_LINKED_LIST:
+            q->impl = &queue_impl_by_linked_list;
+            break;
+        default:
+            q->impl = &queue_impl_by_vector;
+            break;
+    }
     q->instance = q->impl->_queue_create(arg1, arg2);
 
     return q;

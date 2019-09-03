@@ -64,7 +64,7 @@ void  queue_enqueue_impl_by_array(void *_q, void *data)
 {
     QUEUE_INSTANCE
     if (q->capacity > q->size && q->front != q->rear) {
-        memcpy(q->rear, data, q->sizeof_data);
+        memcpy(queue_at(q, q->rear), data, q->sizeof_data);
         q->rear = (q->rear + 1) % q->capacity;
         q->size++;
     }

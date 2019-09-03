@@ -24,7 +24,7 @@ int main(int argc, char **argv)
     int arr[] = {1,2,3,4,5};
     s_llst_t node[5];
     for (int i = 0; i < 5; i++) {
-        node[i] = single_linked_list_create(&arr[i]);
+        node[i] = single_linked_list_create(&arr[i], sizeof(int));
         single_linked_list_dump_node(&node[i], print);
     }
 

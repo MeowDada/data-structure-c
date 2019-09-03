@@ -14,8 +14,8 @@ QUEUE_TEST_LIBS       := vector
 all: build_queue_test
 
 build_queue_test:
-	$(CC) $(CFLAGS) -c $(QUEUE_TEST_SRCS) $(addprefix -I,$(INCLUDE_PATH)) -L $(LIBRARY_PATH) -l $(QUEUE_TEST_LIBS)
-	$(CC) $(CFLAGS) -o $(QUEUE_TEST_PROG) $(QUEUE_TEST_OBJS) -L $(LIBRARY_PATH) -l $(QUEUE_TEST_LIBS)
+	$(CC) $(CFLAGS) -c $(QUEUE_TEST_SRCS) $(addprefix -I,$(INCLUDE_PATH)) -L$(LIBRARY_PATH) -l$(QUEUE_TEST_LIBS)
+	$(CC) $(CFLAGS) -o $(QUEUE_TEST_PROG) $(QUEUE_TEST_OBJS) -L$(LIBRARY_PATH) -l$(QUEUE_TEST_LIBS)
 
 clean:
 	rm -rf *.

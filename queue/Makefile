@@ -15,7 +15,7 @@ all: build_queue_test
 
 build_queue_test:
 	$(CC) $(CFLAGS) -c $(QUEUE_TEST_SRCS) $(addprefix -I,$(INCLUDE_PATH))
-	$(CC) $(CFLAGS) -o $(QUEUE_TEST_PROG) $(QUEUE_TEST_OBJS) -L$(LIBRARY_PATH) $(addprefix -I,$(QUEUE_TEST_LIBS))
+	$(CC) $(CFLAGS) -o $(QUEUE_TEST_PROG) $(QUEUE_TEST_OBJS) -L$(LIBRARY_PATH) $(addprefix -l,$(QUEUE_TEST_LIBS))
 
 clean:
 	rm -rf *.

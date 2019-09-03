@@ -20,7 +20,7 @@ build_vector_unit_test:
 	$(CC) $(CFLAGS) -o $(VECTOR_UNIT_TEST_PROG) $(VECTOR_UNIT_TEST_OBJS)
 
 build_vector_lib:
-	$(CC) -shared -o $(LIB_DIR)/$(VECTOR_LIB_TARGET) -fPIC $(LOGGER_LIB_SRCS)
+	$(CC) -shared -o $(LIB_DIR)/$(VECTOR_LIB_TARGET) -fPIC $(VECTOR_LIB_SRCS)
 
 clean:
 	rm -rf *.o

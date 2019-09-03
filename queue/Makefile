@@ -3,13 +3,13 @@
 CC                    := gcc
 CFLAGS                := -Wall -g -std=gnu99
 
-INCLUDE_PATH          := ../common ../vector
+INCLUDE_PATH          := ../common ../vector ../linked_list
 LIBRARY_PATH          := ../lib
 
 QUEUE_TEST_PROG       := queue_test
 QUEUE_TEST_SRCS       := queue_test.c queue.c queue_impl_by_array.c queue_impl_by_linked_list.c queue_impl_by_vector.c
 QUEUE_TEST_OBJS       := $(patsubst %.c,%.o,$(QUEUE_TEST_SRCS))
-QUEUE_TEST_LIBS       := vector llst
+QUEUE_TEST_LIBS       := vector llist
 
 all: build_queue_test
 

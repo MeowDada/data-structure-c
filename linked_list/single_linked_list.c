@@ -80,7 +80,7 @@ void single_linked_list_delete(s_llst_t head, int idx)
 any_t single_linked_list_get_node(s_llst_t head, int idx)
 {
     if (idx < 0 || !head)
-        return;
+        return NULL;
     
     single_linked_list *cur = (single_linked_list *)head;
     for (int i = 0 ; i < idx; i++) {

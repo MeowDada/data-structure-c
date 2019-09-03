@@ -98,7 +98,7 @@ void single_linked_list_dump_node(s_llst_t node, void (*printFunc)(any_t))
     (*printFunc)(node);
 }
 
-void single_linked_list_iterate(s_llst_t node, FPany func, any_t args)
+void single_linked_list_iterate(s_llst_t node, PFany func, any_t args)
 {
     single_linked_list *cur = node;
 

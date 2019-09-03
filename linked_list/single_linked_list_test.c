@@ -2,12 +2,13 @@
 #include <stdlib.h>
 #include "single_linked_list.h"
 
-static void print_int(void *node, void *args)
+static int print_int(void *node, void *args)
 {
     if (node)
         printf("%d ", *(int *)node);
     else
         printf("(nil)");
+    return 0;
 }
 
 int main(int argc, char **argv)

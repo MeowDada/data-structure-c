@@ -1,10 +1,8 @@
 #ifndef VECTOR_H
 #define VECTOR_H
-#include <unistd.h>
+#include "common.h"
 
-typedef void  *any_t;
-typedef void  *vector_t;
-typedef void (*PFany)(any_t, any_t);
+typedef any_t  vector_t;
 typedef void (*PrintFunc)(any_t);
 typedef int  (*cmpFunc)(const void *, const void *);
 typedef void (*PsortFunc)(any_t, size_t, size_t, cmpFunc);

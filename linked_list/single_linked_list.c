@@ -105,7 +105,8 @@ any_t single_linked_list_get_node(s_llst_t head, int idx)
 
 void single_linked_list_dump_node(s_llst_t node, void (*printFunc)(any_t))
 {
-    (*printFunc)(node);
+    single_linked_list *cur = (single_linked_list *)node;
+    (*printFunc)(cur->value);
 }
 
 void single_linked_list_iterate(s_llst_t node, PFany func, any_t args)
@@ -113,7 +114,7 @@ void single_linked_list_iterate(s_llst_t node, PFany func, any_t args)
     single_linked_list *cur = (single_linked_list *)node;
 
     while(cur) {
-        (*func)(cur, args);
+        (*func)(cur->value, args);
         cur = cur->next;
     } 
 }

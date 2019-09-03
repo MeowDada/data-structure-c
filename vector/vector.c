@@ -209,7 +209,7 @@ void vector_iterate(vector_t v, PFany fptr, any_t args)
 int vector_find(vector_t v, any_t target, cmpFunc cmp)
 {
     if (!target || !cmp || !v)
-        return;
+        return -1;
 
     VECTOR_GET_INSTANCE
     int size = vec->size;

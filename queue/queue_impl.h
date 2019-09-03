@@ -47,10 +47,6 @@ queue_impl queue_impl_by_vector = {
     ._queue_destroy  = queue_destroy_impl_by_vector
 };
 
-queue_impl queue_impl_by_vector = {
-
-};
-
 queue_impl queue_impl_by_linked_list = {
 
 };

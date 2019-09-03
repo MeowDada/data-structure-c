@@ -15,7 +15,10 @@ int main(int argc, char **argv)
 
     for (int i = 0; i < 10; i++) {
         void *item = queue_dequeue(q);
-        printf("%d ", *(int *)item);
+        if (item)
+            printf("%d ", *(int *)item);
+        else
+            printf("(nil) ");
     }
     printf("\n");
 

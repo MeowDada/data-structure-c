@@ -205,7 +205,7 @@ void linked_list_dump_list(linked_list_t _node, void (*printFunc)(any_t))
 linked_list_t linked_list_insert_tail(linked_list_t _list, linked_list_t _node)
 {
     if (!_list || !_node)
-        return;
+        return NULL;
     
     list_t *list = (list_t *)_list;
     list_t *node = (list_t *)_node;
@@ -226,7 +226,7 @@ linked_list_t linked_list_insert_tail(linked_list_t _list, linked_list_t _node)
 linked_list_t linked_list_insert_head(linked_list_t _list, linked_list_t _node)
 {
     if (!_list || !_node)
-        return;
+        return NULL;
     
     list_t *list = (list_t *)_list;
     list_t *node = (list_t *)_node;

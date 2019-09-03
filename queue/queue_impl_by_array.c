@@ -73,7 +73,7 @@ void  queue_enqueue_impl_by_array(void *_q, void *data)
 void *queue_dequeue_impl_by_array(void *_q)
 {
     QUEUE_INSTANCE
-    if (q->size > 0 && q->front != q->rear) {
+    if (q->size > 0) {
         void *data = queue_at(q, q->front);
         q->front = (q->front + 1) % q->capacity;
         q->size--;

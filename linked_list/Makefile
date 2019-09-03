@@ -11,7 +11,7 @@ SINGLE_LINKED_LIST_OBJS := $(patsubst %.c,%.o,$(SINGLE_LINKED_LIST_SRCS))
 
 all: build_single_linked_list_test
 
-build_single_linked_list_test
+build_single_linked_list_test:
 	$(CC) $(CFLAGS) -c $(SINGLE_LINKED_LIST_SRCS) -I $(INCLUDE_PATH)
 	$(CC) $(CFLAGS) -o $(SINGLE_LINKED_LIST_PROG) $(SINGLE_LINKED_LIST_OBJS)
 

@@ -8,7 +8,7 @@
 
 void *queue_create_impl_by_vector(void *size, void *dump)
 {
-    vector_t *v = vector_create(*(size_t *)size);
+    vector_t v = vector_create(*(size_t *)size);
     return v;
 }
 

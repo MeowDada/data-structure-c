@@ -6,7 +6,7 @@ static void queue_basic_test(int type)
 {
     int capacity = 5;
     size_t sizeof_int = sizeof(int);
-    queue_t q = queue_create(QUEUE_IMPL_BY_ARRAY, &capacity, &sizeof_int);
+    queue_t q = queue_create(type, &capacity, &sizeof_int);
 
     int arr[] = {0,1,2,3,4,5,6,7,8,9};
     for (int i = 0; i < 7; i++) {

@@ -47,11 +47,14 @@ void queue_enqueue_impl_by_linked_list(void *_q, void *data)
     QUEUE_INSTANCE
     if (!q->list && q->size == 0) {
         q->list = linked_list_create(data, q->sizeof_elem);
+        q->size++;
+        return;
     }
 
     if (q->list) {
         linked_list_t *node = linked_list_create(data, q->sizeof_elem);
         q->list = linked_list_insert_tail(q->list, node);
+        q->size++;
     }
 }
 
@@ -63,6 +66,7 @@ void *queue_dequeue_impl_by_linked_list(void *_q)
         void *copy = calloc(1, q->sizeof_elem);
         memcpy(copy, val, q->sizeof_elem);
         q->list = linked_list_delete_head(q->list);
+        q->size--;
         return copy;
     }
     return NULL;

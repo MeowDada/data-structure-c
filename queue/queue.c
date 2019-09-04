@@ -11,7 +11,7 @@ typedef struct queue {
 
 queue_t queue_create(int impl, any_t arg1, any_t arg2)
 {
-    queue *q    = calloc(1, sizeof(queue));
+    queue *q = calloc(1, sizeof(queue));
     if (!q)
         return NULL;
 

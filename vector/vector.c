@@ -131,18 +131,16 @@ void vector_destroy(vector_t *v)
 
 void vector_push_back(vector_t v, any_t element)
 {
-    vector_resize_check(v);
-    
     VECTOR_GET_INSTANCE
+    vector_resize_check(vec);
     vector_assign_element(vec, vec->size, element);
     vec->size++;
 }
 
 void vector_push_front(vector_t v, any_t element)
 {
-    vector_resize_check(v);
-
     VECTOR_GET_INSTANCE
+    vector_resize_check(vec);
     vector_shift_element(vec, 0, 1);
     vector_assign_element(vec, 0, element);
     vec->size++;

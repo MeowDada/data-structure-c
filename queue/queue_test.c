@@ -5,7 +5,7 @@
 static void queue_basic_test(queue_t q)
 {
     int arr[] = {0,1,2,3,4,5,6,7,8,9};
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < 8; i++) {
         queue_enqueue(q, &arr[i]);
     }
 
@@ -23,7 +23,7 @@ static void queue_basic_test(queue_t q)
 
 int main(int argc, char **argv)
 {
-    int capacity = 10;
+    int capacity = 5;
     size_t sizeof_int = sizeof(int);
     queue_t q_arr = queue_create(QUEUE_IMPL_BY_ARRAY, &capacity, &sizeof_int);
     queue_t q_vec = queue_create(QUEUE_IMPL_BY_VECTOR, &sizeof_int, NULL);

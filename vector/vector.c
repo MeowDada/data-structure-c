@@ -117,6 +117,23 @@ vector_t vector_create(size_t size)
     return (vector_t)vec;
 }
 
+vector_t vector_create_by_size(uint capacity, size_t size)
+{
+    vector *vec = calloc(1, sizeof(vector));
+    if (!vec)
+        return NULL;
+    
+    vec->capacity    = capacity;
+    vec->size        = 0;
+    vec->sizeof_elem = size;
+    vec->data        = calloc(vec->capacity, size);
+    if (!vec->data) {
+        free(vec);
+        return NULL;
+    }
+    return (vector_t)vec;
+}
+
 void vector_destroy(vector_t *v)
 {
     if (!v || !*v)

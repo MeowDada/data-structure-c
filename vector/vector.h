@@ -8,6 +8,7 @@ typedef int  (*cmpFunc)(const void *, const void *);
 typedef void (*PsortFunc)(any_t, size_t, size_t, cmpFunc);
 
 extern vector_t   vector_create(size_t);
+extern vector_t   vector_create_by_size(uint, size_t);
 extern void       vector_destroy(vector_t *);
 extern void       vector_push_back(vector_t, any_t);
 extern void       vector_push_front(vector_t, any_t);

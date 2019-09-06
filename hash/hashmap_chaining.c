@@ -5,8 +5,8 @@
 #include "hashmap_impl.h"
 
 #define HASHMAP_INSTANCE(_ptr) hashmap map = (hashmap)(_ptr)
-#define HASHMAP_MIN_SHIFT     (4)
-#define HASHMAP_RESIZE_FACTOR (8)
+#define HASHMAP_MIN_SHIFT     (3)
+#define HASHMAP_RESIZE_FACTOR (3)
 
 typedef struct _entry *entry;
 struct _entry {
@@ -332,6 +332,10 @@ void hashmap_chaining_dump(hashmap_t _map, printFunc print_fn)
     uint capacity = map->capacity;
     for (int i = 0; i < capacity; i++) {
         printf("#%03d: [", i);
+        if (!map->entries[i]->key) {
+            printf(" (nil)");
+            continue;
+        }
         for (entry e = map->entries[i]; e != NULL; e = e->next) {
             if (e->key && e->value)
                 (*print_fn)(e->value);

@@ -6,6 +6,8 @@ static void print_int(void *val)
 {
     if (val)
         printf(" %d", *(int *)val);
+    else
+        printf(" (nil)");
 }
 
 int main(int argc, char **argv)
@@ -16,8 +18,22 @@ int main(int argc, char **argv)
 
     for (int i = 0; i < 16; i++)
         hashmap_insert(map, &arr[i], &arr[i]);
-    
     hashmap_dump(map, print_int);
+
+    int key = 5;
+    void *val = hashmap_find(map, &key);
+    print_int(val);
+    printf("\n");
+
+    key = 10;
+    val = hashmap_find(map, &key);
+    print_int(val);
+    printf("\n");
+
+    key = 50;
+    val = hashmap_find(map, &key);
+    print_int(val);
+    printf("\n");
 
     return 0;
 }

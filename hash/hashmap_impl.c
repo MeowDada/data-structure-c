@@ -1,4 +1,3 @@
-#include <stdlib.h>
 #include "hashmap_impl.h"
 
 hashmap_impl hashmap_impl_table[] = {

@@ -46,4 +46,3 @@ uint hash_int(const any_t obj)
     return (uint)(*(int *)obj);
 }
 
-

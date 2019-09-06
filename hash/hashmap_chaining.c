@@ -37,11 +37,11 @@ static entry entry_create(void)
     e->value  = NULL;
 }
 
-static entry hashmap_init(hashmap map)
+static void hashmap_init(hashmap map)
 {
     map->entries = calloc(map->capacity, sizeof(entry));
     if (!map->entries)
-        return NULL;
+        return;
     
     for (int i = 0; i < map->capacity; i++)
         map->entries[i] = entry_create();
@@ -155,16 +155,17 @@ static void insert_entry_to_entries(entry e, entry *entries, uint index)
     node->value = e->value;
 }
 
-static void hashmap_rehash_entry(hashmap map, entry e, entry *entries)
+static int hashmap_rehash_entry(hashmap map, entry e, entry *entries)
 {
     if (!e || !e->key)
-        return;
+        return HASHMAP_MISS;
     
     uint index = hash_key_to_index(map, e->key);
     insert_entry_to_entries(e, entries, index);
+    return HASHMAP_HIT;
 }
 
-static void hashmap_rehash_entry_wrapper(void *_entry, void *_args)
+static int hashmap_rehash_entry_wrapper(void *_entry, void *_args)
 {
     struct entry_params {
         void  *_hashmap;
@@ -175,7 +176,7 @@ static void hashmap_rehash_entry_wrapper(void *_entry, void *_args)
     hashmap map    = (hashmap)param->_hashmap;
     entry *entries = (entry *)param->_entries;
     entry e        = (entry)_entry;
-    hashmap_rehash_entry(map, e, entries);
+    return hashmap_rehash_entry(map, e, entries);
 }
 
 static void hashmap_resize_bigger(hashmap map)
@@ -190,7 +191,7 @@ static void hashmap_resize_bigger(hashmap map)
 
     /* update hashmap */
     map->capacity = capacity_new;
-    map->shifted  = map->shifted++;
+    map->shifted  = map->shifted + 1;
     map->mod      = prime_mode[map->shifted];
 
     /* define struct for iterate function */
@@ -205,7 +206,7 @@ static void hashmap_resize_bigger(hashmap map)
 
     /* iterate old entries in hashmap and reshash them to new entries */
     for (int i = 0; i < capacity_old; i++)
-        entry_iterate(map, hashmap_rehash_entry_wrapper, (void *)&args);
+        entry_iterate(map->entries[i], hashmap_rehash_entry_wrapper, (any_t)&args);
 
     /* cleanup old entries and assign new entries to hashmap instance */
     hashmap_destroy_all_entries(map);
@@ -224,6 +225,7 @@ void *hashmap_chaining_create(HashFunc hash_func, HashEqualFunc key_equal_func)
     map->mod            = prime_mode[HASHMAP_MIN_SHIFT];
     map->hash_func      = hash_func ? hash_func : hash_direct;
     map->key_equal_func = key_equal_func;
+    hashmap_init(map);
 
     return map;
 }
@@ -325,7 +327,7 @@ void hashmap_chaining_dump(hashmap_t _map, printFunc print_fn)
     HASHMAP_INSTANCE(_map);
     uint capacity = map->capacity;
     for (int i = 0; i < capacity; i++) {
-        printf("#%03d: [");
+        printf("#%03d: [", i);
         for (entry e = map->entries[i]; e != NULL; e = e->next) {
             if (e->key && e->value)
                 (*print_fn)(e->value);

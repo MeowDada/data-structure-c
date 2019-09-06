@@ -1,7 +1,7 @@
 .PHONY: all clean
 
 CC                 := gcc
-CFLAGS             := -Wall -Wno-unused-value -Wno-unsed-function -Wno-pointer-to-int-cast -g -std=gnu99
+CFLAGS             := -Wall -Wno-unused-value -Wno-unused-function -Wno-pointer-to-int-cast -g -std=gnu99
 INCLUDE_PATH       := ../common
 
 HASHMAP_TEST_PROG  := hashmap_test

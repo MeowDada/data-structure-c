@@ -1,6 +1,6 @@
 #include "hash_func.h"
 
-const uint prime_mod [] =
+const uint prime_mode [] =
 {
   1,          /* For 1 << 0 */
   2,

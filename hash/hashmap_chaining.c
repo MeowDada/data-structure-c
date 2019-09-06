@@ -301,7 +301,6 @@ void hashmap_chaining_insert(hashmap_t _map, any_t key, any_t value)
     if (!e) {
         if (length >= map->resize_factor)
             hashmap_resize_bigger(map);
-        hashmap_resize_bigger(map);
         last->next = entry_create();
         e          = last->next;
         e->next    = NULL;

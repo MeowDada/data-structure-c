@@ -50,6 +50,16 @@ static void hashmap_init(hashmap map)
         map->entries[i] = entry_create();
 }
 
+static void entry_clear(entry e)
+{
+    if (!e)
+        return;
+    
+    e->key   = NULL;
+    e->value = NULL;
+    e->next  = NULL;
+}
+
 static void entry_destroy(entry e)
 {
     if (!e)
@@ -325,10 +335,22 @@ void hashmap_chaining_remove(hashmap_t _map, any_t key)
         return;
     
     entry next = e->next;
+
+    /* Do not destroy the first entry, just do clean up */
+    if (e == map->entries[index] && len==1) {
+        entry_clear(e);
+        map->size--;
+        return;
+    }
+    else if (e == map->entries[index] && len>1) {
+        map->entries[index] = next;
+        entry_destroy(e);
+        map->size--;
+        return;
+    }
     entry_destroy(e);
     if (last)
         last->next = next;
-    map->size--;
 }
 
 void hashmap_chaining_dump(hashmap_t _map, printFunc print_fn)

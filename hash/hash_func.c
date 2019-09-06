@@ -41,4 +41,9 @@ uint hash_direct(any_t obj)
     return (uint)obj;
 }
 
+uint hash_int(any_t obj)
+{
+    return (uint)(*(int *)obj);
+}
+
 

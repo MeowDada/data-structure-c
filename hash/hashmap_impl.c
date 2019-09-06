@@ -11,6 +11,7 @@ hashmap_impl hashmap_impl_table[] = {
         ._hashmap_iterate = hashmap_chaining_iterate,
         ._hashmap_insert  = hashmap_chaining_insert,
         ._hashmap_remove  = hashmap_chaining_remove,
+        ._hashmap_dump    = hashmap_chaining_dump
     },
     [HASHMAP_DOUBLE_HASHING] = {
 

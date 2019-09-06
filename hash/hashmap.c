@@ -73,3 +73,9 @@ void hashmap_remove(hashmap_t _map, any_t key)
     HASHMAP_INSTANCE(_map);
     return map->impl->_hashmap_remove(map->instance, key);
 }
+
+void hashmap_dump(hashmap_t _map, printFunc print_fn)
+{
+    HASHMAP_INSTANCE(_map);
+    map->impl->_hashmap_dump(map->instance, print_fn);
+}

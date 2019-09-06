@@ -25,5 +25,10 @@ extern int       hsahmap_size(hashmap_t map);
 extern void      hashmap_iterate(hashmap_t map, PFany fptr, any_t args);
 extern void      hashmap_insert(hashmap_t map, any_t k, any_t v);
 extern void      hashmap_remove(hashmap_t map, any_t k);
+extern void      hashmap_dump(hashmap_t map, printFunc);
+
+extern HashFunc      hash_int(any_t);
+
+extern HashEqualFunc hash_int_equal(const int *, const int *);
 
 #endif /* HASHMAP_H */

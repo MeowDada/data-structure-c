@@ -11,6 +11,7 @@ typedef struct hashmap_impl {
     void      (*_hashmap_iterate)(hashmap_t map, PFany fptr, any_t args);
     void      (*_hashmap_insert)(hashmap_t map, any_t key, any_t value);
     void      (*_hashmap_remove)(hashmap_t map, any_t key);
+    void      (*_hashmap_dump)(hashmap_t map, printFunc);
 } hashmap_impl;
 
 extern const hashmap_impl hashmap_impl_table[2];
@@ -23,5 +24,6 @@ extern int       hashmap_chaining_size(hashmap_t);
 extern void      hashmap_chaining_iterate(hashmap_t, PFany, any_t);
 extern void      hashmap_chaining_insert(hashmap_t, any_t, any_t);
 extern void      hashmap_chaining_remove(hashmap_t, any_t);
+extern void      hashmap_chaining_dump(hashmap_t, printFunc);
 
 #endif /* HASHMAP_IMPL_H */

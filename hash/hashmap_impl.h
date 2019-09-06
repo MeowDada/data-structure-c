@@ -14,7 +14,7 @@ typedef struct hashmap_impl {
     void      (*_hashmap_dump)(hashmap_t map, printFunc);
 } hashmap_impl;
 
-extern const hashmap_impl hashmap_impl_table[2];
+extern hashmap_impl hashmap_impl_table[2];
 
 extern void     *hashmap_chaining_create(HashFunc, HashEqualFunc);
 extern void      hashmap_chaining_destroy(hashmap_t);

@@ -100,6 +100,8 @@ static any_t entry_look_up(entry e, any_t key, HashEqualFunc key_equal_func, ent
     if (!e->key)
         return NULL;
 
+    (int *)len;
+
     entry cur = e;
     int result = HASHMAP_MISS;
     while (cur) {
@@ -311,7 +313,7 @@ void hashmap_chaining_remove(hashmap_t _map, any_t key)
     uint index = hash_key_to_index(map, key);
     entry last = NULL;
     int   len  = 0;
-    entry e = entry_look_up(e, key, map->key_equal_func, &last, &len);
+    entry e = entry_look_up(map->entries[index], key, map->key_equal_func, &last, &len);
     if (!e)
         return;
     

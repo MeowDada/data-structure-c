@@ -36,12 +36,12 @@ const uint prime_mod [] =
   2147483647  /* For 1 << 31 */
 };
 
-uint hash_direct(any_t obj)
+uint hash_direct(const any_t obj)
 {
     return (uint)obj;
 }
 
-uint hash_int(any_t obj)
+uint hash_int(const any_t obj)
 {
     return (uint)(*(int *)obj);
 }

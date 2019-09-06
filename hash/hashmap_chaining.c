@@ -35,6 +35,8 @@ static entry entry_create(void)
     e->next   = NULL;
     e->key    = NULL;
     e->value  = NULL;
+
+    return e;
 }
 
 static void hashmap_init(hashmap map)

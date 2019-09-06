@@ -337,13 +337,13 @@ void hashmap_chaining_remove(hashmap_t _map, any_t key)
     entry next = e->next;
 
     /* Do not destroy the first entry, just do clean up */
-    if (e == map->entries[index] && len==1) {
+    if (e == map->entries[index] && !next) {
         entry_clear(e);
         map->size--;
         return;
     }
-    else if (e == map->entries[index] && len>1) {
-        *map->entries[index] = *next;
+    else if (e == map->entries[index] && next) {
+        map->entries[index] = next;
         entry_destroy(e);
         map->size--;
         return;

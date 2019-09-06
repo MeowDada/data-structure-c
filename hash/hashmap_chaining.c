@@ -107,7 +107,7 @@ static any_t entry_look_up(entry e, any_t key, HashEqualFunc key_equal_func, ent
     entry cur = e;
     int result = HASHMAP_MISS;
     while (cur) {
-        *len++;
+        *len = *len + 1;
         result = (*key_equal_func)(cur->key, key);
         if (result == HASHMAP_HIT) {
             return cur;

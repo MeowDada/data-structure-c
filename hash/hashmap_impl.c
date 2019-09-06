@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include "hashmap_impl.h"
 
-hashmap_impl hashmap_impl_table[] = {
+const hashmap_impl hashmap_impl_table[] = {
     [HASHMAP_CHAINING] = {
         ._hashmap_create  = hashmap_chaining_create,
         ._hashmap_destroy = hashmap_chaining_destroy,

@@ -1,7 +1,9 @@
 #include "hashmap.h"
 
-int hash_int_equal(const int *lhs, const int *rhs)
+int hash_int_equal(const void *lhs, const void *rhs)
 {
-    return *lhs == *rhs ? 1 : 0;
+    int l = *(int *)lhs;
+    int r = *(int *)rhs;
+    return l == r ? 1 : 0;
 }
 

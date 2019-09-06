@@ -21,6 +21,7 @@ struct _hashmap {
     uint          size;
     int           mod;
     int           shifted;
+    int           resize_factor;
     entry        *entries;
     HashFunc      hash_func;
     HashEqualFunc key_equal_func;
@@ -226,6 +227,7 @@ void *hashmap_chaining_create(HashFunc hash_func, HashEqualFunc key_equal_func)
     map->size           = 0;
     map->capacity       = 1 << HASHMAP_MIN_SHIFT;
     map->shifted        = HASHMAP_MIN_SHIFT;
+    map->resize_factor  = HASHMAP_RESIZE_FACTOR;
     map->mod            = prime_mode[HASHMAP_MIN_SHIFT];
     map->hash_func      = hash_func ? hash_func : hash_direct;
     map->key_equal_func = key_equal_func;
@@ -297,7 +299,7 @@ void hashmap_chaining_insert(hashmap_t _map, any_t key, any_t value)
 
     /* insert this <k,v> to hashmap if it is not exist in current hashmap */
     if (!e) {
-        if (length >= HASHMAP_RESIZE_FACTOR)
+        if (length >= map->resize_factor)
             hashmap_resize_bigger(map);
         hashmap_resize_bigger(map);
         last->next = entry_create();

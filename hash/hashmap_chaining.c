@@ -6,7 +6,7 @@
 
 #define HASHMAP_INSTANCE(_ptr) hashmap map = (hashmap)(_ptr)
 #define HASHMAP_MIN_SHIFT     (3)
-#define HASHMAP_RESIZE_FACTOR (5)
+#define HASHMAP_RESIZE_FACTOR (3)
 
 typedef struct _entry *entry;
 struct _entry {

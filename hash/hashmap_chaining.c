@@ -92,10 +92,14 @@ static void entry_iterate_destroy(entry e)
 {
     if (!e)
         return;
-    
-    while (e->next)
-        entry_iterate_destroy(e->next);
-    entry_destroy(e);
+
+    entry cur  = e;
+    entry next = NULL;
+    while (cur) {
+        next = cur->next;
+        entry_destroy(cur);
+        cur = next;
+    }
 }
 
 static any_t entry_look_up(entry e, any_t key, HashEqualFunc key_equal_func, entry *last, int *len)

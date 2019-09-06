@@ -29,6 +29,6 @@ extern void      hashmap_dump(hashmap_t map, printFunc);
 
 extern uint      hash_int(const any_t);
 
-extern int       hash_int_equal(const int *, const int *);
+extern int       hash_int_equal(const any_t, const any_t);
 
 #endif /* HASHMAP_H */

@@ -326,7 +326,7 @@ void hashmap_chaining_remove(hashmap_t _map, any_t key)
     
     entry next = e->next;
     entry_destroy(e);
-    if (!last)
+    if (last)
         last->next = next;
     map->size--;
 }

@@ -343,7 +343,7 @@ void hashmap_chaining_remove(hashmap_t _map, any_t key)
         return;
     }
     else if (e == map->entries[index] && len>1) {
-        map->entries[index] = next;
+        *map->entries[index] = *next;
         entry_destroy(e);
         map->size--;
         return;

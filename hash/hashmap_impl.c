@@ -21,6 +21,6 @@ hashmap_impl hashmap_impl_table[] = {
         ._hashmap_iterate = hashmap_double_hashing_iterate,
         ._hashmap_insert  = hashmap_double_hashing_insert,
         ._hashmap_remove  = hashmap_double_hashing_remove,
-        ._hashmap_dump    = hashmap_double_hashing_remove,
+        ._hashmap_dump    = hashmap_double_hashing_dump,
     },
 };

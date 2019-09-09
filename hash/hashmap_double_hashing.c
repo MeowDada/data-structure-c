@@ -196,7 +196,7 @@ void hashmap_double_hashing_iterate(hashmap_t _map, PFany fptr, any_t args)
 void hashmap_double_hashing_insert(hashmap_t _map, any_t key, any_t value)
 {
     if (!_map || !key)
-        return NULL;
+        return;
     
     HASHMAP_INSTANCE(_map);
     if (map->size == map->capacity)

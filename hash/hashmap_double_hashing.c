@@ -90,7 +90,7 @@ static bucket lookup_for_bucket(hashmap map, any_t key)
     bucket buckets = map->buckets;
     HashEqualFunc key_equal_func = map->key_equal_func;
     while (try_lookup_to_bucket(&buckets[index], key, key_equal_func)) {
-        index = map->probing_func(map, index);
+        index = map->probing_func(map, &index);
         if (index == start)
             return NULL;
     }
@@ -148,7 +148,7 @@ any_t hashmap_double_hashing_find(hashmap_t _map, any_t key)
     HashEqualFunc key_equal_func = map->key_equal_func;
     bucket buckets = map->buckets;
     while (try_lookup_to_bucket(&buckets[index], key, key_equal_func) == HASHMAP_MISS) {
-        index = map->probing_func(map, index);
+        index = map->probing_func(map, &index);
         if (index == start)
             return NULL;
     }
@@ -166,7 +166,7 @@ int hashmap_double_hashing_has_key(hashmap_t _map, any_t key)
     HashEqualFunc key_equal_func = map->key_equal_func;
     bucket buckets = map->buckets;
     while (try_lookup_to_bucket(&buckets[index], key, key_equal_func) == HASHMAP_MISS) {
-        index = map->probing_func(map, index);
+        index = map->probing_func(map, &index);
         if (index == start)
             return HASHMAP_MISS;
     }

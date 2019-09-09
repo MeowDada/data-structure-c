@@ -9,7 +9,7 @@
 
 typedef struct _hashmap *hashmap;
 typedef struct _bucket *bucket;
-typedef uint (*probe)(hashmap, any_t);
+typedef uint (*probe)(hashmap, any_t, any_t);
 
 struct _bucket {
     any_t key;
@@ -26,10 +26,36 @@ struct _hashmap {
     HashEqualFunc key_equal_func;
 };
 
-static uint linear_probing(hashmap map, any_t index)
+static uint linear_probing(hashmap map, any_t index, any_t dump)
 {
     return (*(uint *)index+1) % map->capacity;
 }
+
+static uint quadratic_probing(hashmap map, any_t _index, any_t _last)
+{
+    uint index  = *(uint *)_index;
+    int  last   = *(int *)_last;
+    uint offset = 0;
+
+    if (last < 0)
+        offset = -1 * last * last;
+    else
+        offset = last * last;
+
+    if (last == 0)
+        *(int *)_last = 1;
+    else if (last > 0)
+        *(int *)_last *= -1;
+    else
+        *(int *)_last = (last * -1) + 1;
+
+    return (index + offset) % map->capacity;
+}
+
+static probe probing_func[] = {
+    linear_probing,
+    quadratic_probing,
+};
 
 static inline uint hash_key(HashFunc hash_func, any_t key)
 {
@@ -87,10 +113,11 @@ static bucket lookup_for_bucket(hashmap map, any_t key)
 {
     uint index = hash_key_to_index(map, key);
     uint start = index;
+    int  last  = 0;
     bucket buckets = map->buckets;
     HashEqualFunc key_equal_func = map->key_equal_func;
     while (try_lookup_to_bucket(&buckets[index], key, key_equal_func)) {
-        index = map->probing_func(map, &index);
+        index = map->probing_func(map, &index, &last);
         if (index == start)
             return NULL;
     }
@@ -145,10 +172,11 @@ any_t hashmap_double_hashing_find(hashmap_t _map, any_t key)
     HASHMAP_INSTANCE(_map);
     uint index = hash_key_to_index(map, key);
     uint start = index;
+    int  last  = 0;
     HashEqualFunc key_equal_func = map->key_equal_func;
     bucket buckets = map->buckets;
     while (try_lookup_to_bucket(&buckets[index], key, key_equal_func) == HASHMAP_MISS) {
-        index = map->probing_func(map, &index);
+        index = map->probing_func(map, &index, &last);
         if (index == start)
             return NULL;
     }
@@ -163,10 +191,11 @@ int hashmap_double_hashing_has_key(hashmap_t _map, any_t key)
     HASHMAP_INSTANCE(_map);
     uint index = hash_key_to_index(map, key);
     uint start = index;
+    int  last  = 0;
     HashEqualFunc key_equal_func = map->key_equal_func;
     bucket buckets = map->buckets;
     while (try_lookup_to_bucket(&buckets[index], key, key_equal_func) == HASHMAP_MISS) {
-        index = map->probing_func(map, &index);
+        index = map->probing_func(map, &index, &last);
         if (index == start)
             return HASHMAP_MISS;
     }
@@ -203,8 +232,9 @@ void hashmap_double_hashing_insert(hashmap_t _map, any_t key, any_t value)
         hashmap_resize(map, 2);
 
     uint index = hash_key_to_index(map, key);
+    int  last  = 0;
     while (try_insert_to_bucket(&map->buckets[index], key, value)) {
-        index = map->probing_func(map, &index);
+        index = map->probing_func(map, &index, &last);
     }
     map->size++;
 }
@@ -238,4 +268,13 @@ void hashmap_double_hashing_dump(hashmap_t _map, printFunc fptr)
             printf(" (nil)");
         printf(" ]\n");
     }
+}
+
+void hashmap_double_hashing_probing(hashmap_t _map, int type)
+{
+    if (!_map)
+        return;
+    
+    HASHMAP_INSTANCE(_map);
+    map->probing_func = probing_func[type];
 }

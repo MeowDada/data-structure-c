@@ -370,3 +370,8 @@ void hashmap_chaining_dump(hashmap_t _map, printFunc print_fn)
         printf(" ]\n");
     }
 }
+
+void hashmap_chaining_probing(hashmap_t map, int type)
+{
+    return;
+}

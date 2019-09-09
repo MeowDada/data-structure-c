@@ -10,7 +10,8 @@ hashmap_impl hashmap_impl_table[] = {
         ._hashmap_iterate = hashmap_chaining_iterate,
         ._hashmap_insert  = hashmap_chaining_insert,
         ._hashmap_remove  = hashmap_chaining_remove,
-        ._hashmap_dump    = hashmap_chaining_dump
+        ._hashmap_dump    = hashmap_chaining_dump,
+        ._hashmap_probing = hashmap_chaining_probing,
     },
     [HASHMAP_DOUBLE_HASHING] = {
         ._hashmap_create  = hashmap_double_hashing_create,
@@ -22,5 +23,6 @@ hashmap_impl hashmap_impl_table[] = {
         ._hashmap_insert  = hashmap_double_hashing_insert,
         ._hashmap_remove  = hashmap_double_hashing_remove,
         ._hashmap_dump    = hashmap_double_hashing_dump,
+        ._hashmap_probing = hashmap_double_hashing_probing,
     },
 };

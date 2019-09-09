@@ -79,3 +79,9 @@ void hashmap_dump(hashmap_t _map, printFunc print_fn)
     HASHMAP_INSTANCE(_map);
     map->impl->_hashmap_dump(map->instance, print_fn);
 }
+
+void hashmap_probing(hashmap_t _map, int type)
+{
+    HASHMAP_INSTANCE(_map);
+    map->impl->_hashmap_probing(map->instance, type);
+}

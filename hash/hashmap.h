@@ -17,6 +17,11 @@ enum {
     HASHMAP_HIT  = 1,
 };
 
+enum {
+    HASHMAP_LINEAR_PROBING    = 0,
+    HASHMAP_QUADRATIC_PROBING = 1,
+};
+
 extern hashmap_t hashmap_create(int type, HashFunc hash_func, HashEqualFunc equal_func);
 extern void      hashmap_destroy(hashmap_t map);
 extern any_t     hashmap_find(hashmap_t map, any_t k);
@@ -26,6 +31,7 @@ extern void      hashmap_iterate(hashmap_t map, PFany fptr, any_t args);
 extern void      hashmap_insert(hashmap_t map, any_t k, any_t v);
 extern void      hashmap_remove(hashmap_t map, any_t k);
 extern void      hashmap_dump(hashmap_t map, printFunc);
+extern void      hashmap_probing(hashmap_t map, int type);
 
 extern uint      hash_int(const any_t);
 

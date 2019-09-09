@@ -5,17 +5,18 @@
 #include "hashmap_impl.h"
 
 #define HASHMAP_INSTANCE(_map) hashmap map = (hashmap)(_map)
-
 #define HASHMAP_INIT_CAPACITY (16U)
 
+typedef struct _hashmap *hashmap;
 typedef struct _bucket *bucket;
+typedef uint (*probe)(hashmap, any_t);
+
 struct _bucket {
     any_t key;
     any_t value;
     int   is_tomb;
 };
 
-typedef struct _hashmap *hashmap;
 struct _hashmap {
     uint          capacity;
     uint          size;
@@ -24,8 +25,6 @@ struct _hashmap {
     HashFunc      hash_func;
     HashEqualFunc key_equal_func;
 };
-
-typedef uint (*probe)(hashmap, any_t);
 
 static uint linear_probing(hashmap map, any_t index)
 {
@@ -65,20 +64,6 @@ static void hashmap_resize(hashmap map, uint ratio)
     }
 }
 
-static bucket lookup_for_bucket(hashmap map, any_t key)
-{
-    uint index = hash_key_to_index(map, key);
-    uint start = index;
-    bucket buckets = map->buckets;
-    HashEqualFunc key_equal_func = map->key_equal_func;
-    while (try_lookup_to_bucket(&buckets[index], key, key_equal_func)) {
-        index = map->probing_func(map, index);
-        if (index == start)
-            return NULL;
-    }
-    return &buckets[index];
-}
-
 static int try_lookup_to_bucket(bucket b, any_t key, HashEqualFunc key_equal_func)
 {
     if (!b->key || b->is_tomb)
@@ -96,6 +81,20 @@ static int try_insert_to_bucket(bucket b, any_t key, any_t value)
         return 0;
     }
     return -1;
+}
+
+static bucket lookup_for_bucket(hashmap map, any_t key)
+{
+    uint index = hash_key_to_index(map, key);
+    uint start = index;
+    bucket buckets = map->buckets;
+    HashEqualFunc key_equal_func = map->key_equal_func;
+    while (try_lookup_to_bucket(&buckets[index], key, key_equal_func)) {
+        index = map->probing_func(map, index);
+        if (index == start)
+            return NULL;
+    }
+    return &buckets[index];
 }
 
 static void initialize_buckets(bucket buckets, uint capacity)
@@ -232,7 +231,7 @@ void hashmap_double_hashing_dump(hashmap_t _map, printFunc fptr)
     uint capacity = map->capacity;
     bucket buckets = map->buckets;
     for (int i = 0 ; i < capacity; i++) {
-        printf("#%03d: [");
+        printf("#%03d: [", i);
         if (buckets[i].key && !buckets[i].is_tomb)
             fptr(buckets[i].value);
         else

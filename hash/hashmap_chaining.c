@@ -278,7 +278,7 @@ int hashmap_chaining_has_key(hashmap_t _map, any_t key)
     return hashmap_chaining_find(_map, key)? 1 : 0;
 }
 
-int hashmap_chaining_size(hashmap_t _map)
+uint hashmap_chaining_size(hashmap_t _map)
 {
     HASHMAP_INSTANCE(_map);
     return map->size;

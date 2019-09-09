@@ -50,7 +50,7 @@ int hashmap_has_key(hashmap_t _map, any_t key)
     return map->impl->_hashmap_has_key(map->instance, key);
 }
 
-int hsahmap_size(hashmap_t _map)
+uint hsahmap_size(hashmap_t _map)
 {
     HASHMAP_INSTANCE(_map);
     return map->impl->_hashmap_size(map->instance);

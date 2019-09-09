@@ -21,7 +21,7 @@ extern hashmap_t hashmap_create(int type, HashFunc hash_func, HashEqualFunc equa
 extern void      hashmap_destroy(hashmap_t map);
 extern any_t     hashmap_find(hashmap_t map, any_t k);
 extern int       hashmap_has_key(hashmap_t map, any_t k);
-extern int       hsahmap_size(hashmap_t map);
+extern uint      hsahmap_size(hashmap_t map);
 extern void      hashmap_iterate(hashmap_t map, PFany fptr, any_t args);
 extern void      hashmap_insert(hashmap_t map, any_t k, any_t v);
 extern void      hashmap_remove(hashmap_t map, any_t k);

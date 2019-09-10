@@ -5,11 +5,13 @@
 #include "hashmap_impl.h"
 
 #define HASHMAP_INSTANCE(_map) hashmap map = (hashmap)(_map)
-#define HASHMAP_INIT_CAPACITY (16U)
+#define HASHMAP_MIN_SHIFT (4)
 
-typedef struct _hashmap *hashmap;
-typedef struct _bucket *bucket;
-typedef uint (*probe)(hashmap, any_t, any_t);
+
+typedef struct _hashmap   *hashmap;
+typedef struct _bucket    *bucket;
+typedef struct _prob_args *prob_args;
+typedef uint (*probe)(hashmap, prob_args);
 
 struct _bucket {
     any_t key;
@@ -20,21 +22,73 @@ struct _bucket {
 struct _hashmap {
     uint          capacity;
     uint          size;
+    int           shifted;
+    int           mod;
     bucket        buckets;
     probe         probing_func;
     HashFunc      hash_func;
     HashEqualFunc key_equal_func;
 };
 
-static uint linear_probing(hashmap map, any_t index, any_t dump)
+struct _prob_args {
+    uint  index;      /* commonly used */
+    int   last;       /* used for quadratic probing */
+    uint  count;      /* used for double hashing */
+    any_t key;        /* used for double hashing */
+};
+
+static struct _prob_args g_prob_args = {
+    .index = 0,
+    .last  = 0,
+    .count = 1,
+    .key   = NULL,
+};
+
+static prob_args prob_args_create(uint index, any_t key)
 {
-    return (*(uint *)index+1) % map->capacity;
+    prob_args args = callc(1, sizeof(struct _prob_args));
+    args->index = index;
+    args->last  = 0;
+    args->count = 1;
+    args->key   = key;
+
+    return args;
 }
 
-static uint quadratic_probing(hashmap map, any_t _index, any_t _last)
+static inline void prob_args_set(prob_args args, uint index, any_t key)
 {
-    uint index  = *(uint *)_index;
-    int  last   = *(int *)_last;
+    args->index = index;
+    args->key   = key;
+}
+
+static inline void prob_args_set_index(prob_args args, uint index)
+{
+    args->index = index;
+}
+
+static inline void prob_args_reset(prob_args args)
+{
+    args->index = 0;
+    args->last  = 0;
+    args->count = 1;
+    args->key   = NULL;
+}
+
+static inline void prob_args_destroy(prob_args args)
+{
+    if (args)
+        free(args);
+}
+
+static inline uint linear_probing(hashmap map, prob_args args)
+{
+    return (args->index + 1) % map->capacity;
+}
+
+static uint quadratic_probing(hashmap map, prob_args args)
+{
+    uint index  = args->index;
+    int  last   = args->last;
     uint offset = 0;
 
     if (last < 0)
@@ -43,18 +97,31 @@ static uint quadratic_probing(hashmap map, any_t _index, any_t _last)
         offset = last * last;
 
     if (last == 0)
-        *(int *)_last = 1;
+        args->last = 1;
     else if (last > 0)
-        *(int *)_last *= -1;
+        args->last *= -1;
     else
-        *(int *)_last = (last * -1) + 1;
+        args->last = (args->last*-1)+1;
 
     return (index + offset) % map->capacity;
+}
+
+static uint double_hashing(hashmap map, prob_args args)
+{
+    int index = (int)(args->index);
+    int count = args->count;
+    int prime = map->mod;
+    int hash  = map->hash_func(args->key);
+    uint ret = (index + count*(prime-(hash % prime))) % map->capacity;
+    args->count += 1;
+
+    return ret;
 }
 
 static probe probing_func[] = {
     linear_probing,
     quadratic_probing,
+    double_hashing,
 };
 
 static inline uint hash_key(HashFunc hash_func, any_t key)
@@ -74,12 +141,60 @@ static inline uint hash_key_to_index(hashmap map, any_t key)
     return index;
 }
 
-static void hashmap_resize(hashmap map, uint ratio)
+static void hashmap_rehash(hashmap map)
+{
+    /* create temp buckets and initialize it */
+    uint capacity  = map->capacity;
+    bucket buckets = map->buckets;
+    bucket temp_bucket = calloc(capacity, sizeof(struct _bucket));
+    if (!temp_bucket)
+        return;
+
+    for (int i = 0; i < capacity; i++) {
+        temp_bucket[i].key     = NULL;
+        temp_bucket[i].value   = NULL;
+        temp_bucket[i].is_tomb = 0;
+    }
+
+    /* apply rehashing for each items in old buckets to temp buckets */
+    for (int i = 0; i < capacity; i++) {
+        if (buckets[i].key && !buckets[i].is_tomb) {
+            any_t key   = buckets[i].key;
+            any_t value = buckets[i].value;
+            uint index  = hash_key_to_index(map, key);
+            if (!temp_bucket[index].key) {
+                temp_bucket[index].key   = key;
+                temp_bucket[index].value = value;
+                continue;
+            }
+            int count = 1;
+            prob_args_reset(&g_prob_args);
+            prob_args_set(&g_prob_args, index, key);
+            while (1) {
+                index = map->probing_func(map, &g_prob_args);
+                prob_args_set_index(&g_prob_args, index);
+                if (!temp_bucket[index].key) {
+                    temp_bucket[index].key   = key;
+                    temp_bucket[index].value = value;
+                    break;
+                }
+            }
+        }
+    }
+
+    /* cleanup and assign new buckets to the hashmap instance */
+    free(map->buckets);
+    map->buckets = temp_bucket;
+}
+
+static void hashmap_resize_bigger(hashmap map)
 {
     uint capacity_old = map->capacity;
-    uint capacity_new = capacity_old * ratio;
-    map->capacity = capacity_new;
-    void *temp = realloc(map->buckets, sizeof(struct _bucket) * capacity_new);
+    uint capacity_new = capacity_old << 1;
+    map->capacity     = capacity_new;
+    map->shifted      = map->shifted + 1;
+    map->mod          = prime_mode[map->shifted];
+    void *temp        = realloc(map->buckets, sizeof(struct _bucket) * capacity_new);
     if (temp)
         map->buckets = (bucket)temp;
     
@@ -87,6 +202,11 @@ static void hashmap_resize(hashmap map, uint ratio)
         map->buckets[i].key     = NULL;
         map->buckets[i].value   = NULL;
         map->buckets[i].is_tomb = 0;
+    }
+
+    /* rehashing all the value inside the hashmap if applying doulbe hashing method */
+    if (map->probing_func == double_hashing) {
+        hashmap_rehash(map);
     }
 }
 
@@ -113,11 +233,13 @@ static bucket lookup_for_bucket(hashmap map, any_t key)
 {
     uint index = hash_key_to_index(map, key);
     uint start = index;
-    int  last  = 0;
     bucket buckets = map->buckets;
     HashEqualFunc key_equal_func = map->key_equal_func;
+    prob_args_reset(&g_prob_args);
+    prob_args_set(&g_prob_args, index, key);
     while (try_lookup_to_bucket(&buckets[index], key, key_equal_func)) {
-        index = map->probing_func(map, &index, &last);
+        index = map->probing_func(map, &g_prob_args);
+        prob_args_set_index(&g_prob_args, index);
         if (index == start)
             return NULL;
     }
@@ -140,7 +262,9 @@ void *hashmap_double_hashing_create(HashFunc hash_func, HashEqualFunc key_equal_
         return NULL;
     
     map->size           = 0;
-    map->capacity       = HASHMAP_INIT_CAPACITY;
+    map->capacity       = 1 << HASHMAP_MIN_SHIFT;
+    map->shifted        = HASHMAP_MIN_SHIFT;
+    map->mod            = prime_mode[map->shifted];
     map->hash_func      = hash_func ? hash_func : hash_direct;
     map->key_equal_func = key_equal_func;
     map->probing_func   = linear_probing;
@@ -172,11 +296,13 @@ any_t hashmap_double_hashing_find(hashmap_t _map, any_t key)
     HASHMAP_INSTANCE(_map);
     uint index = hash_key_to_index(map, key);
     uint start = index;
-    int  last  = 0;
     HashEqualFunc key_equal_func = map->key_equal_func;
     bucket buckets = map->buckets;
+    prob_args_reset(&g_prob_args);
+    prob_args_set(&g_prob_args, index, key);
     while (try_lookup_to_bucket(&buckets[index], key, key_equal_func) == HASHMAP_MISS) {
-        index = map->probing_func(map, &index, &last);
+        index = map->probing_func(map, &g_prob_args);
+        prob_args_set_index(&g_prob_args, index);
         if (index == start)
             return NULL;
     }
@@ -191,11 +317,13 @@ int hashmap_double_hashing_has_key(hashmap_t _map, any_t key)
     HASHMAP_INSTANCE(_map);
     uint index = hash_key_to_index(map, key);
     uint start = index;
-    int  last  = 0;
     HashEqualFunc key_equal_func = map->key_equal_func;
     bucket buckets = map->buckets;
+    prob_args_reset(&g_prob_args);
+    prob_args_set(&g_prob_args, index, key);
     while (try_lookup_to_bucket(&buckets[index], key, key_equal_func) == HASHMAP_MISS) {
-        index = map->probing_func(map, &index, &last);
+        index = map->probing_func(map, &g_prob_args);
+        prob_args_set_index(&g_prob_args, index);
         if (index == start)
             return HASHMAP_MISS;
     }
@@ -229,12 +357,14 @@ void hashmap_double_hashing_insert(hashmap_t _map, any_t key, any_t value)
     
     HASHMAP_INSTANCE(_map);
     if (map->size == map->capacity)
-        hashmap_resize(map, 2);
+        hashmap_resize_bigger(map);
 
     uint index = hash_key_to_index(map, key);
-    int  last  = 0;
+    prob_args_reset(&g_prob_args);
+    prob_args_set(&g_prob_args, index, key);
     while (try_insert_to_bucket(&map->buckets[index], key, value)) {
-        index = map->probing_func(map, &index, &last);
+        index = map->probing_func(map, &g_prob_args);
+        prob_args_set_index(&g_prob_args, index);
     }
     map->size++;
 }

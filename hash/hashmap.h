@@ -9,7 +9,7 @@ typedef int   (*HashEqualFunc) (const any_t, const any_t);
 
 enum {
     HASHMAP_CHAINING       = 0,
-    HASHMAP_DOUBLE_HASHING = 1,
+    HASHMAP_OPEN_ADDRESSING = 1,
 };
 
 enum {
@@ -20,6 +20,7 @@ enum {
 enum {
     HASHMAP_LINEAR_PROBING    = 0,
     HASHMAP_QUADRATIC_PROBING = 1,
+    HASHMAP_DOUBLE_HASHING    = 2,
 };
 
 extern hashmap_t hashmap_create(int type, HashFunc hash_func, HashEqualFunc equal_func);

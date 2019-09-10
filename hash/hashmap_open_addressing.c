@@ -7,7 +7,6 @@
 #define HASHMAP_INSTANCE(_map) hashmap map = (hashmap)(_map)
 #define HASHMAP_MIN_SHIFT (4)
 
-
 typedef struct _hashmap   *hashmap;
 typedef struct _bucket    *bucket;
 typedef struct _prob_args *prob_args;
@@ -254,7 +253,7 @@ static void initialize_buckets(bucket buckets, uint capacity)
     }
 }
 
-void *hashmap_double_hashing_create(HashFunc hash_func, HashEqualFunc key_equal_func)
+void *hashmap_open_addressing_create(HashFunc hash_func, HashEqualFunc key_equal_func)
 {
     hashmap map = calloc(1, sizeof(struct _hashmap));
     if (!map)
@@ -277,7 +276,7 @@ void *hashmap_double_hashing_create(HashFunc hash_func, HashEqualFunc key_equal_
     return map;
 }
 
-void hashmap_double_hashing_destroy(hashmap_t _map)
+void hashmap_open_addressing_destroy(hashmap_t _map)
 {
     if (!_map)
         return;
@@ -287,7 +286,7 @@ void hashmap_double_hashing_destroy(hashmap_t _map)
     free(map);
 }
 
-any_t hashmap_double_hashing_find(hashmap_t _map, any_t key)
+any_t hashmap_open_addressing_find(hashmap_t _map, any_t key)
 {
     if (!_map || !key)
         return NULL;
@@ -307,7 +306,7 @@ any_t hashmap_double_hashing_find(hashmap_t _map, any_t key)
     return buckets[index].value;
 }
 
-int hashmap_double_hashing_has_key(hashmap_t _map, any_t key)
+int hashmap_open_addressing_has_key(hashmap_t _map, any_t key)
 {
     if (!_map || !key)
         return HASHMAP_MISS;
@@ -327,13 +326,13 @@ int hashmap_double_hashing_has_key(hashmap_t _map, any_t key)
     return HASHMAP_HIT;
 }
 
-uint hashmap_double_hashing_size(hashmap_t _map)
+uint hashmap_open_addressing_size(hashmap_t _map)
 {
     HASHMAP_INSTANCE(_map);
     return map->size;
 }
 
-void hashmap_double_hashing_iterate(hashmap_t _map, PFany fptr, any_t args)
+void hashmap_open_addressing_iterate(hashmap_t _map, PFany fptr, any_t args)
 {
     if (!_map || !fptr)
         return;
@@ -347,7 +346,7 @@ void hashmap_double_hashing_iterate(hashmap_t _map, PFany fptr, any_t args)
     }
 }
 
-void hashmap_double_hashing_insert(hashmap_t _map, any_t key, any_t value)
+void hashmap_open_addressing_insert(hashmap_t _map, any_t key, any_t value)
 {
     if (!_map || !key)
         return;
@@ -365,7 +364,7 @@ void hashmap_double_hashing_insert(hashmap_t _map, any_t key, any_t value)
     map->size++;
 }
 
-void hashmap_double_hashing_remove(hashmap_t _map, any_t key)
+void hashmap_open_addressing_remove(hashmap_t _map, any_t key)
 {
     if (!_map || !key)
         return;
@@ -378,7 +377,7 @@ void hashmap_double_hashing_remove(hashmap_t _map, any_t key)
     }
 }
 
-void hashmap_double_hashing_dump(hashmap_t _map, printFunc fptr)
+void hashmap_open_addressing_dump(hashmap_t _map, printFunc fptr)
 {
     if (!_map || !fptr)
         return;
@@ -396,7 +395,7 @@ void hashmap_double_hashing_dump(hashmap_t _map, printFunc fptr)
     }
 }
 
-void hashmap_double_hashing_probing(hashmap_t _map, int type)
+void hashmap_open_addressing_probing(hashmap_t _map, int type)
 {
     if (!_map)
         return;

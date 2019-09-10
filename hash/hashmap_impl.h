@@ -29,16 +29,16 @@ extern void      hashmap_chaining_remove(hashmap_t, any_t);
 extern void      hashmap_chaining_dump(hashmap_t, printFunc);
 extern void      hashmap_chaining_probing(hashmap_t, int);
 
-/* hashmap implemented by double hashing */
-extern void     *hashmap_double_hashing_create(HashFunc, HashEqualFunc);
-extern void      hashmap_double_hashing_destroy(hashmap_t);
-extern any_t     hashmap_double_hashing_find(hashmap_t, any_t);
-extern int       hashmap_double_hashing_has_key(hashmap_t, any_t);
-extern uint      hashmap_double_hashing_size(hashmap_t);
-extern void      hashmap_double_hashing_iterate(hashmap_t, PFany, any_t);
-extern void      hashmap_double_hashing_insert(hashmap_t, any_t, any_t);
-extern void      hashmap_double_hashing_remove(hashmap_t, any_t);
-extern void      hashmap_double_hashing_dump(hashmap_t, printFunc);
-extern void      hashmap_double_hashing_probing(hashmap_t, int);
+/* hashmap implemented by open addressing */
+extern void     *hashmap_open_addressing_create(HashFunc, HashEqualFunc);
+extern void      hashmap_open_addressing_destroy(hashmap_t);
+extern any_t     hashmap_open_addressing_find(hashmap_t, any_t);
+extern int       hashmap_open_addressing_has_key(hashmap_t, any_t);
+extern uint      hashmap_open_addressing_size(hashmap_t);
+extern void      hashmap_open_addressing_iterate(hashmap_t, PFany, any_t);
+extern void      hashmap_open_addressing_insert(hashmap_t, any_t, any_t);
+extern void      hashmap_open_addressing_remove(hashmap_t, any_t);
+extern void      hashmap_open_addressing_dump(hashmap_t, printFunc);
+extern void      hashmap_open_addressing_probing(hashmap_t, int);
 
 #endif /* HASHMAP_IMPL_H */

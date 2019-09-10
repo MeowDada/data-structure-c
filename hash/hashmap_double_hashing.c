@@ -82,7 +82,8 @@ static inline void prob_args_destroy(prob_args args)
 
 static inline uint linear_probing(hashmap map, prob_args args)
 {
-    return (args->index + 1) % map->capacity;
+    args->index = (args->index + 1) % map->capacity;
+    return args->index;
 }
 
 static uint quadratic_probing(hashmap map, prob_args args)
@@ -103,7 +104,8 @@ static uint quadratic_probing(hashmap map, prob_args args)
     else
         args->last = (args->last*-1)+1;
 
-    return (index + offset) % map->capacity;
+    args->index = (index + offset) % map->capacity;
+    return args->index;
 }
 
 static uint double_hashing(hashmap map, prob_args args)
@@ -114,7 +116,7 @@ static uint double_hashing(hashmap map, prob_args args)
     int hash  = map->hash_func(args->key);
     uint ret = (index + count*(prime-(hash % prime))) % map->capacity;
     args->count += 1;
-
+    args->index = ret;
     return ret;
 }
 
@@ -171,7 +173,6 @@ static void hashmap_rehash(hashmap map)
             prob_args_set(&g_prob_args, index, key);
             while (1) {
                 index = map->probing_func(map, &g_prob_args);
-                prob_args_set_index(&g_prob_args, index);
                 if (!temp_bucket[index].key) {
                     temp_bucket[index].key   = key;
                     temp_bucket[index].value = value;
@@ -238,7 +239,6 @@ static bucket lookup_for_bucket(hashmap map, any_t key)
     prob_args_set(&g_prob_args, index, key);
     while (try_lookup_to_bucket(&buckets[index], key, key_equal_func)) {
         index = map->probing_func(map, &g_prob_args);
-        prob_args_set_index(&g_prob_args, index);
         if (index == start)
             return NULL;
     }
@@ -301,7 +301,6 @@ any_t hashmap_double_hashing_find(hashmap_t _map, any_t key)
     prob_args_set(&g_prob_args, index, key);
     while (try_lookup_to_bucket(&buckets[index], key, key_equal_func) == HASHMAP_MISS) {
         index = map->probing_func(map, &g_prob_args);
-        prob_args_set_index(&g_prob_args, index);
         if (index == start)
             return NULL;
     }
@@ -322,7 +321,6 @@ int hashmap_double_hashing_has_key(hashmap_t _map, any_t key)
     prob_args_set(&g_prob_args, index, key);
     while (try_lookup_to_bucket(&buckets[index], key, key_equal_func) == HASHMAP_MISS) {
         index = map->probing_func(map, &g_prob_args);
-        prob_args_set_index(&g_prob_args, index);
         if (index == start)
             return HASHMAP_MISS;
     }
@@ -363,7 +361,6 @@ void hashmap_double_hashing_insert(hashmap_t _map, any_t key, any_t value)
     prob_args_set(&g_prob_args, index, key);
     while (try_insert_to_bucket(&map->buckets[index], key, value)) {
         index = map->probing_func(map, &g_prob_args);
-        prob_args_set_index(&g_prob_args, index);
     }
     map->size++;
 }

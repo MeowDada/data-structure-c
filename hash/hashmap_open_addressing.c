@@ -31,6 +31,7 @@ struct _hashmap {
 
 struct _prob_args {
     uint  index;      /* commonly used */
+    uint  start;      /* commonly used */
     int   last;       /* used for quadratic probing */
     uint  count;      /* used for double hashing */
     any_t key;        /* used for double hashing */
@@ -39,6 +40,7 @@ struct _prob_args {
 static struct _prob_args g_prob_args = {
     .index = 0,
     .last  = 0,
+    .start = 0,
     .count = 1,
     .key   = NULL,
 };
@@ -47,6 +49,7 @@ static prob_args prob_args_create(uint index, any_t key)
 {
     prob_args args = calloc(1, sizeof(struct _prob_args));
     args->index = index;
+    args->start = index;
     args->last  = 0;
     args->count = 1;
     args->key   = key;
@@ -57,6 +60,7 @@ static prob_args prob_args_create(uint index, any_t key)
 static inline void prob_args_set(prob_args args, uint index, any_t key)
 {
     args->index = index;
+    args->start = index;
     args->key   = key;
 }
 
@@ -68,6 +72,7 @@ static inline void prob_args_set_index(prob_args args, uint index)
 static inline void prob_args_reset(prob_args args)
 {
     args->index = 0;
+    args->start = 0;
     args->last  = 0;
     args->count = 1;
     args->key   = NULL;
@@ -109,11 +114,13 @@ static uint quadratic_probing(hashmap map, prob_args args)
 
 static uint double_hashing(hashmap map, prob_args args)
 {
-    int index = (int)(args->index);
-    int count = args->count;
-    int prime = map->mod;
-    int hash  = map->hash_func(args->key);
-    uint ret = (index + count*(prime-(hash % prime))) % map->capacity;
+    uint capacity = map->capacity;
+    int index     = (int)args->index;
+    int count     = args->count;
+    int prime     = map->mod;
+    int hash      = map->hash_func(args->key);
+
+    uint ret = (hash + count * (1 + ((hash>>5)+1)) % (capacity-1)) % capacity;
     args->count += 1;
     args->index = ret;
     return ret;

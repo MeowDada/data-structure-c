@@ -46,7 +46,7 @@ static struct _prob_args g_prob_args = {
 
 static prob_args prob_args_create(uint index, any_t key)
 {
-    prob_args args = callc(1, sizeof(struct _prob_args));
+    prob_args args = calloc(1, sizeof(struct _prob_args));
     args->index = index;
     args->last  = 0;
     args->count = 1;
@@ -167,7 +167,6 @@ static void hashmap_rehash(hashmap map)
                 temp_bucket[index].value = value;
                 continue;
             }
-            int count = 1;
             prob_args_reset(&g_prob_args);
             prob_args_set(&g_prob_args, index, key);
             while (1) {

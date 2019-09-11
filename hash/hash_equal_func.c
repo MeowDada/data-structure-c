@@ -1,44 +1,7 @@
 #include <stdint.h>
 #include <unistd.h>
 #include <string.h>
-<<<<<<< HEAD
 #include "hashmap.h"
-=======
-#include "hash_equal_func.h"
-
-int hash_uint_equal(const any_t lhs, const any_t rhs)
-{
-    uint l = *(uint *)lhs;
-    uint r = *(uint *)rhs;
-    return l == r ? 1 : 0;
-}
-
-int hash_uint8_equal(const any_t lhs, const any_t rhs)
-{
-    uint8_t l = *(uint8_t *)lhs;
-    uint8_t r = *(uint8_t *)rhs;
-    return l == r ? 1 : 0;
-}
-
-int hash_uint16_equal(const any_t lhs, const any_t rhs)
-{
-    uint16_t l = *(uint16_t *)lhs;
-    uint16_t r = *(uint16_t *)rhs;
-    return l == r ? 1 : 0;
-}
-
-int hash_uint32_euqal(const any_t lhs, const any_t rhs)
-{
-    return hash_uint_equal(lhs, rhs);
-}
-
-int hash_uint64_equal(const any_t lhs, const any_t rhs)
-{
-    uint64_t l = *(uint64_t *)lhs;
-    uint64_t r = *(uint64_t *)rhs;
-    return l == r ? 1 : 0;
-}
->>>>>>> 2c47fa353fb2f75d2b91d4cf339bfb5d9f35b2fe
 
 int hash_uint_equal(const any_t lhs, const any_t rhs)
 {

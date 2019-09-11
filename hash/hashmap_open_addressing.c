@@ -115,9 +115,7 @@ static uint quadratic_probing(hashmap map, prob_args args)
 static uint double_hashing(hashmap map, prob_args args)
 {
     uint capacity = map->capacity;
-    int index     = (int)args->index;
     int count     = args->count;
-    int prime     = map->mod;
     int hash      = map->hash_func(args->key);
 
     uint ret = (hash + count * (1 + ((hash>>5)+1)) % (capacity-1)) % capacity;

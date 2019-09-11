@@ -1,6 +1,8 @@
 #ifndef HASHMAP_H
 #define HASHMAP_H
 #include "common.h"
+#include "hash_func.h"
+#include "hash_equal_func.h"
 
 typedef any_t  hashmap_t;
 typedef any_t  hashmap_iter_t;

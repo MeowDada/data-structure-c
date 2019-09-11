@@ -1,7 +1,7 @@
 #include <stdint.h>
 #include <unistd.h>
 #include <string.h>
-#include "hashmap.h"
+#include "hash_equal_func.h"
 
 int hash_uint_equal(const any_t lhs, const any_t rhs)
 {

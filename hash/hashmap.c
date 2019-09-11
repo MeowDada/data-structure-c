@@ -3,6 +3,7 @@
 #include "hashmap.h"
 #include "hashmap_impl.h"
 #include "hash_func.h"
+#include "hash_equal_func.h"
 
 #define HASHMAP_INSTANCE(_ptr) hashmap *map = (hashmap *)(_ptr)
 

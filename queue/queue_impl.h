@@ -11,7 +11,7 @@ typedef struct queue_impl {
     void  (*_queue_destroy)(void *);
 } queue_impl;
 
-extern queue_impl *queue_impl_table[];
+extern queue_impl queue_impl_table[];
 
 void *queue_create_impl_by_array(void *, void *);
 int   queue_is_empty_impl_by_array(void *);

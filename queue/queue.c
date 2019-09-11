@@ -15,7 +15,7 @@ queue_t queue_create(int impl, any_t arg1, any_t arg2)
     if (!q)
         return NULL;
 
-    q->impl = queue_impl_table[impl];
+    q->impl = &queue_impl_table[impl];
     q->instance = q->impl->_queue_create(arg1, arg2);
 
     return q;

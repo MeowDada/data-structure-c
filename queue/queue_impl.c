@@ -33,7 +33,7 @@ queue_impl queue_impl_by_linked_list = {
 };
 */
 
-queue_impl *queue_impl_table[] = {
+queue_impl queue_impl_table[] = {
     [QUEUE_IMPL_BY_ARRAY] = {
         ._queue_create   = queue_create_impl_by_array,
         ._queue_is_empty = queue_is_empty_impl_by_array,

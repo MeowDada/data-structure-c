@@ -72,7 +72,18 @@ void *queue_dequeue_impl_by_linked_list(void *_q)
     return NULL;
 }
 
-void  queue_destroy_impl_by_linked_list(void *_q)
+void queue_clear_impl_by_linked_list(void *_q)
+{
+    if (!_q)
+        return;
+    
+    QUEUE_INSTANCE
+    linked_list_destroy_list(q->list);
+    q->list = NULL;
+    q->size = 0;
+}
+
+void queue_destroy_impl_by_linked_list(void *_q)
 {
     if (!_q)
         return;

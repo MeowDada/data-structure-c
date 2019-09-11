@@ -16,6 +16,7 @@ extern int     queue_is_full(queue_t);
 extern int     queue_size(queue_t);
 extern void    queue_enqueue(queue_t, any_t);
 extern any_t   queue_dequeue(queue_t);
-extern void    queue_destroy(queue_t _q);
+extern void    queue_clear(queue_t);
+extern void    queue_destroy(queue_t);
 
 #endif /* QUEUE_H */

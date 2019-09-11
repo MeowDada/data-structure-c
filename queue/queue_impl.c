@@ -41,6 +41,7 @@ queue_impl queue_impl_table[] = {
         ._queue_size     = queue_size_impl_by_array,
         ._queue_enqueue  = queue_enqueue_impl_by_array,
         ._queue_dequeue  = queue_dequeue_impl_by_array,
+        ._queue_clear    = queue_clear_impl_by_array,
         ._queue_destroy  = queue_destroy_impl_by_array
     },
     [QUEUE_IMPL_BY_LINKED_LIST] = {
@@ -50,6 +51,7 @@ queue_impl queue_impl_table[] = {
         ._queue_size     = queue_size_impl_by_vector,
         ._queue_enqueue  = queue_enqueue_impl_by_vector,
         ._queue_dequeue  = queue_dequeue_impl_by_vector,
+        ._queue_clear    = queue_clear_impl_by_vector,
         ._queue_destroy  = queue_destroy_impl_by_vector
     },
     [QUEUE_IMPL_BY_VECTOR] = {
@@ -59,6 +61,7 @@ queue_impl queue_impl_table[] = {
         ._queue_size     = queue_size_impl_by_linked_list,
         ._queue_enqueue  = queue_enqueue_impl_by_linked_list,
         ._queue_dequeue  = queue_dequeue_impl_by_linked_list,
+        ._queue_clear    = queue_clear_impl_by_linked_list,
         ._queue_destroy  = queue_destroy_impl_by_linked_list
     },
 };

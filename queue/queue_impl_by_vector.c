@@ -38,6 +38,11 @@ void *queue_dequeue_impl_by_vector(void *_q)
     return vector_pop_front(_q);
 }
 
+void queue_clear_impl_by_vector(void *_q)
+{
+    return vector_clear(_q);
+}
+
 void queue_destroy_impl_by_vector(void *_q)
 {
     vector_destroy(&_q);

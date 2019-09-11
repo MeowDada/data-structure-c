@@ -83,6 +83,14 @@ void *queue_dequeue_impl_by_array(void *_q)
     return NULL;
 }
 
+void queue_clear_impl_by_array(void *_q)
+{
+    QUEUE_INSTANCE
+    q->front = 0;
+    q->rear  = 0;
+    q->size  = 0;
+}
+
 void queue_destroy_impl_by_array(void *_q)
 {
     if (!_q)

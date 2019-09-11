@@ -1,16 +1,6 @@
 #include "queue.h"
 #include "queue_impl.h"
 
-struct _queue_impl {
-    void *(*_queue_create)(void *, void *);
-    int   (*_queue_is_empty)(void *);
-    int   (*_queue_is_full)(void *);
-    int   (*_queue_size)(void *);
-    void  (*_queue_enqueue)(void *, void *);
-    void *(*_queue_dequeue)(void *);
-    void  (*_queue_destroy)(void *);
-};
-
 /*
 queue_impl queue_impl_by_array = {
     ._queue_create   = queue_create_impl_by_array,

@@ -34,8 +34,4 @@ extern void      hashmap_remove(hashmap_t map, any_t k);
 extern void      hashmap_dump(hashmap_t map, printFunc);
 extern void      hashmap_probing(hashmap_t map, int type);
 
-extern uint      hash_int(const any_t);
-
-extern int       hash_int_equal(const any_t, const any_t);
-
 #endif /* HASHMAP_H */

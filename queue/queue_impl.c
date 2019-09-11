@@ -1,10 +1,6 @@
-#ifndef QUEUE_IMPL_H
-#define QUEUE_IMPL_H
+#include "queue_impl.h"
 
-typedef struct _queue_impl queue_impl;
-
-/*
-typedef struct queue_impl {
+struct _queue_impl {
     void *(*_queue_create)(void *, void *);
     int   (*_queue_is_empty)(void *);
     int   (*_queue_is_full)(void *);
@@ -12,34 +8,8 @@ typedef struct queue_impl {
     void  (*_queue_enqueue)(void *, void *);
     void *(*_queue_dequeue)(void *);
     void  (*_queue_destroy)(void *);
-} queue_impl;
-*/
+};
 
-void *queue_create_impl_by_array(void *, void *);
-int   queue_is_empty_impl_by_array(void *);
-int   queue_is_full_impl_by_array(void *);
-int   queue_size_impl_by_array(void *);
-void  queue_enqueue_impl_by_array(void *, void *);
-void *queue_dequeue_impl_by_array(void *);
-void  queue_destroy_impl_by_array(void *);
-
-void *queue_create_impl_by_vector(void *, void *);
-int   queue_is_empty_impl_by_vector(void *);
-int   queue_is_full_impl_by_vector(void *);
-int   queue_size_impl_by_vector(void *);
-void  queue_enqueue_impl_by_vector(void *, void *);
-void *queue_dequeue_impl_by_vector(void *);
-void  queue_destroy_impl_by_vector(void *);
-
-void *queue_create_impl_by_linked_list(void *, void *);
-int   queue_is_empty_impl_by_linked_list(void *);
-int   queue_is_full_impl_by_linked_list(void *);
-int   queue_size_impl_by_linked_list(void *);
-void  queue_enqueue_impl_by_linked_list(void *, void *);
-void *queue_dequeue_impl_by_linked_list(void *);
-void  queue_destroy_impl_by_linked_list(void *);
-
-/*
 queue_impl queue_impl_by_array = {
     ._queue_create   = queue_create_impl_by_array,
     ._queue_is_empty = queue_is_empty_impl_by_array,
@@ -69,6 +39,3 @@ queue_impl queue_impl_by_linked_list = {
     ._queue_dequeue  = queue_dequeue_impl_by_linked_list,
     ._queue_destroy  = queue_destroy_impl_by_linked_list
 };
-*/
-
-#endif /* QUEUE_IMPL_H */

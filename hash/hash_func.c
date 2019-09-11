@@ -32,13 +32,17 @@ const uint prime_mode [] =
   134217689,
   268435399,
   536870909,
-  1073741789,
-  2147483647  /* For 1 << 31 */
+  1073741789,2147483647  /* For 1 << 31 */
 };
 
 uint hash_direct(const any_t obj)
 {
     return (uint)obj;
+}
+
+uint hash_uint(const any_t obj)
+{
+    return *(uint *)obj;
 }
 
 uint hash_int(const any_t obj)
